@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: Banunam
+
+  # Database Configuration
+  datasource:
+    url: jdbc:mariadb://localhost:3306/banunam
+    username: root
+    password: sqlMD3
+    driver-class-name=org: mariadb.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+        format_sql: true
+
+# LOGGING LEVEL
+logging:
+  level:
+    root: INFO
+
+# JWT
+jwt:
+  secret: 678fefba6cd3b25ece45fadb63f2e02dbcad00f427ba334fc2655ac66390e3d9c2c1a9b8dd4eb12bbc093c340c7a2c538ea9cf38f3a51654d5312c56974971840bf8587d8013d5d538960a66dd8b3e5ad6114ca8766af46e6138a31890cdad8f5109506c744cd60dba08b65ba9df0de30be2c92b0d2aeeebf2e0e70c7a5e695530703fad3fa352002b3baf353867864b2a54f42a53f8a3a91ccc3387314b82871cfc9f8bf8878b6aeb706a457839de8967b1f15af9e5867f38f8563c3bce8a660e481795f5dac93121be325181eb88e88cf6e489f57c7df88378c62e23b665d1bef22e27cae6b94cf1f18dcc389854a346bf6c60dca94d760d018e8ed381e621
+  expirationDateInMs: 3600000
+  refreshExpirationDateInMs: 900
+
+# USUARIOS
+usuario:
+  tipo1: "ADMIN"
+  tipo2: "EXEC"

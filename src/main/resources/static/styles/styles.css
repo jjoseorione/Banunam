@@ -1,0 +1,107 @@
+
+/*BOTÓN DE VOLVER*/
+/*.volver, .volver:visited{
+	background-color: dodgerblue;
+	border: solid 1px dodgerblue;
+	padding:1em;
+	text-decoration: none;
+	color: white;
+	font-weight: bold;
+}
+.volver:hover{
+	background-color: blue;
+	border: solid 1px blue;
+}
+.volver:active{
+	background-color: white;
+	border: solid 1px blue;
+	color: blue;
+}
+.tituloTabla{
+	font-size: 2em;
+	font-weight: bold;
+	text-align: center;
+	border-bottom: 2px solid dodgerblue;
+	font-family: serif;
+}*/
+.tituloFormulario{
+	font-size: 2em;
+	font-weight: bold;
+	text-align: center;
+	border-bottom: 2px solid blue;
+}
+.fondo{
+    background-color: #444;
+}
+.btn{
+    background-color: #2A6A9E;
+    color: white;
+}
+.btn:hover{
+    background-color: steelblue;
+    color: white;
+}
+.btn:active{
+    box-shadow: 0 0 0 4pt #B6D4E7 !important;
+}
+.barraNav{
+    margin: 0 2%;
+    background-color: #444;
+}
+.barraBoton{
+    text-align: center;
+    background-color: #444;
+    margin: 0;
+    padding: 0;
+}
+.barraBoton>a{
+    font-size: 1.5rem;
+    color: white;
+    display: block;
+    text-decoration: none;
+    background-color: #444;
+    padding: 0.4rem 0;
+    border: 2px solid #444;
+    cursor: default;
+}
+.barraBoton:hover .barraBoton-contenido{
+    display:block;
+}
+.barraBoton-contenido{
+    position: absolute;
+    display: none;
+    text-align: center;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    background-color: #656565;
+    margin: 0;
+    padding: 0;
+    z-index:99;
+
+}
+.barraBoton-contenido>a{
+    font-size: 1.2rem;
+    color: white;
+    display: block;
+    text-decoration: none;
+    background-color: #656565;
+    padding: 0.4rem 0;
+    border: 2px solid #656565;
+    cursor: default;
+}
+.barraBoton-contenido>a:hover{
+    background-color: #222;
+    border: 2px solid #222;
+}
+.tituloPagina{
+    font-size: 2.5rem;
+    text-align: right;
+    color:  white;
+    background-color: #333;
+    padding: 1rem;
+    padding-right: 2vw;
+    letter-spacing: 0.3rem;
+}
+.tituloPagina>span{
+    border: 0.2rem double #2A6A9E;
+    background-color: #333;
+}
