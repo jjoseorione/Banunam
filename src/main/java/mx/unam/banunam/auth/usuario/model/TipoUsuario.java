@@ -1,4 +1,4 @@
-package mx.unam.banunam.auth.model;
+package mx.unam.banunam.auth.usuario.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

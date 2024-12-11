@@ -1,7 +1,7 @@
-package mx.unam.banunam.auth.service;
+package mx.unam.banunam.auth.usuario.service;
 
-import mx.unam.banunam.auth.dto.UsuarioDTO;
-import mx.unam.banunam.auth.model.Usuario;
+import mx.unam.banunam.auth.usuario.dto.UsuarioDTO;
+import mx.unam.banunam.auth.usuario.model.Usuario;
 
 public interface UsuarioService {
     //List<Usuario> listarUsuarios();

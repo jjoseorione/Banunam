@@ -1,6 +1,6 @@
-package mx.unam.banunam.auth.repository;
+package mx.unam.banunam.auth.usuario.repository;
 
-import mx.unam.banunam.auth.model.Usuario;
+import mx.unam.banunam.auth.usuario.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

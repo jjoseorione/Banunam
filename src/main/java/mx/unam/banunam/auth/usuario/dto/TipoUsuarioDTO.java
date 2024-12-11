@@ -1,4 +1,4 @@
-package mx.unam.banunam.auth.dto;
+package mx.unam.banunam.auth.usuario.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

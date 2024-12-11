@@ -1,12 +1,12 @@
-package mx.unam.banunam.auth.controller;
+package mx.unam.banunam.auth.usuario.controller;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import mx.unam.banunam.auth.dto.UsuarioDTO;
+import mx.unam.banunam.auth.usuario.dto.UsuarioDTO;
 import mx.unam.banunam.auth.exception.UsuarioNotFoundException;
-import mx.unam.banunam.auth.service.UsuarioService;
+import mx.unam.banunam.auth.usuario.service.UsuarioService;
 import mx.unam.banunam.auth.util.PropiedadesPerfiles;
 import mx.unam.banunam.security.jwt.JWTTokenProvider;
 import mx.unam.banunam.security.request.JwtRequest;
@@ -29,17 +29,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Slf4j
 @Controller
-@RequestMapping(path = "/customer-care-center/")
-//@PreAuthorize("hasRole('EXEC')")
-@PreAuthorize("hasRole(${usuario.tipo2})")
-public class CustomerCareCenterController {
+@RequestMapping(path = "/user-administration/")
+@PreAuthorize("hasRole(${usuario.tipo1})")
+public class UserAdministrationController {
 	@Autowired
 	private UsuarioService usuarioService;
 	@Autowired
@@ -57,29 +55,24 @@ public class CustomerCareCenterController {
 
 		log.info("Entra a raíz");
 		model.addAttribute("text", "Hola");
-		return "/customer-care-center/home";
+		return "/user-administration/home";
 	}
 
 	@GetMapping("/login")
 	public String login() {
-		return "/customer-care-center/login";
+		return "/user-administration/login";
 	}
 
 	@PostMapping("/login_success_handler")
 	public String loginSuccessHandler() {
 		log.info("Logging user login success...");
-		return "/customer-care-center/home";
+		return "/user-administration/home";
 	}
 
 	@PostMapping("/login_failure_handler")
 	public String loginFailureHandler() {
 		log.info("Login failure handler....");
-		return "/customer-care-center/login";
-	}
-
-	@GetMapping("/prueba1")
-	public String prueba(){
-		return "prueba1";
+		return "/user-administration/login";
 	}
 
 
@@ -87,9 +80,9 @@ public class CustomerCareCenterController {
 	public String createAuthenticationToken(Model model, HttpSession session,
 											@ModelAttribute LoginUserRequest loginUserRequest, HttpServletResponse res, RedirectAttributes flash) throws Exception {
 
-		final String TIPO_USUARIO = propiedadesPerfiles.getTipo2();
+		final String TIPO_USUARIO = propiedadesPerfiles.getTipo1();
 		log.info("LoginUserRequest {}", loginUserRequest);
-		log.info("########## Perfil requerido: {}", propiedadesPerfiles.getTipo2());		//Perfil tipo2: EXEC
+		log.info("########## Perfil requerido: {}", propiedadesPerfiles.getTipo1());		//Perfil tipo2: ADMIN
 		try {
 			UsuarioDTO user = usuarioService.buscarUsuarioPorUsuario(loginUserRequest.getUsername());
 			//Filtro que verifica que el usuario sea del tipo requerido
@@ -112,17 +105,17 @@ public class CustomerCareCenterController {
 			else{
 				log.info("########## JEEM: El usuario no es del perfil requerido");
 				flash.addFlashAttribute("loginError", true);
-				return "redirect:/customer-care-center/login";
+				return "redirect:/user-administration/login";
 			}
 		} catch (UsuarioNotFoundException | BadCredentialsException | DisabledException e) {
 			flash.addFlashAttribute("loginError", true);
-			return "redirect:/customer-care-center/login";
+			return "redirect:/user-administration/login";
 		}
-		return "redirect:/customer-care-center/";
+		return "redirect:/user-administration/";
 	}
 
 	private Authentication authenticate(String username, String password, String tipoUsuario) throws Exception {
-		log.info("########## JEEM: Se accede a CustomerCareCenterController.authenticate");
+		log.info("########## JEEM: Se accede a UserAdministrationController.authenticate");
 		log.info("########## JEEM: Authentication Manager: {}", authenticationManager);
 		try {
 			List<GrantedAuthority> authorities = new ArrayList<>();

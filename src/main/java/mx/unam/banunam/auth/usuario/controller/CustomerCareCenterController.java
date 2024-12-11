@@ -1,12 +1,12 @@
-package mx.unam.banunam.auth.controller;
+package mx.unam.banunam.auth.usuario.controller;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import mx.unam.banunam.auth.dto.UsuarioDTO;
+import mx.unam.banunam.auth.usuario.dto.UsuarioDTO;
 import mx.unam.banunam.auth.exception.UsuarioNotFoundException;
-import mx.unam.banunam.auth.service.UsuarioService;
+import mx.unam.banunam.auth.usuario.service.UsuarioService;
 import mx.unam.banunam.auth.util.PropiedadesPerfiles;
 import mx.unam.banunam.security.jwt.JWTTokenProvider;
 import mx.unam.banunam.security.request.JwtRequest;
@@ -35,10 +35,9 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping(path = "/user-administration/")
-//@PreAuthorize("hasRole('ADMIN')")
-@PreAuthorize("hasRole(${usuario.tipo1})")
-public class UserAdministrationController {
+@RequestMapping(path = "/customer-care-center/")
+@PreAuthorize("hasRole(${usuario.tipo2})")
+public class CustomerCareCenterController {
 	@Autowired
 	private UsuarioService usuarioService;
 	@Autowired
@@ -56,24 +55,29 @@ public class UserAdministrationController {
 
 		log.info("Entra a raíz");
 		model.addAttribute("text", "Hola");
-		return "/user-administration/home";
+		return "/customer-care-center/home";
 	}
 
 	@GetMapping("/login")
 	public String login() {
-		return "/user-administration/login";
+		return "/customer-care-center/login";
 	}
 
 	@PostMapping("/login_success_handler")
 	public String loginSuccessHandler() {
 		log.info("Logging user login success...");
-		return "/user-administration/home";
+		return "/customer-care-center/home";
 	}
 
 	@PostMapping("/login_failure_handler")
 	public String loginFailureHandler() {
 		log.info("Login failure handler....");
-		return "/user-administration/login";
+		return "/customer-care-center/login";
+	}
+
+	@GetMapping("/prueba1")
+	public String prueba(){
+		return "prueba1";
 	}
 
 
@@ -81,9 +85,9 @@ public class UserAdministrationController {
 	public String createAuthenticationToken(Model model, HttpSession session,
 											@ModelAttribute LoginUserRequest loginUserRequest, HttpServletResponse res, RedirectAttributes flash) throws Exception {
 
-		final String TIPO_USUARIO = propiedadesPerfiles.getTipo1();
+		final String TIPO_USUARIO = propiedadesPerfiles.getTipo2();
 		log.info("LoginUserRequest {}", loginUserRequest);
-		log.info("########## Perfil requerido: {}", propiedadesPerfiles.getTipo1());		//Perfil tipo2: ADMIN
+		log.info("########## Perfil requerido: {}", propiedadesPerfiles.getTipo2());		//Perfil tipo2: EXEC
 		try {
 			UsuarioDTO user = usuarioService.buscarUsuarioPorUsuario(loginUserRequest.getUsername());
 			//Filtro que verifica que el usuario sea del tipo requerido
@@ -106,17 +110,17 @@ public class UserAdministrationController {
 			else{
 				log.info("########## JEEM: El usuario no es del perfil requerido");
 				flash.addFlashAttribute("loginError", true);
-				return "redirect:/user-administration/login";
+				return "redirect:/customer-care-center/login";
 			}
 		} catch (UsuarioNotFoundException | BadCredentialsException | DisabledException e) {
 			flash.addFlashAttribute("loginError", true);
-			return "redirect:/user-administration/login";
+			return "redirect:/customer-care-center/login";
 		}
-		return "redirect:/user-administration/";
+		return "redirect:/customer-care-center/";
 	}
 
 	private Authentication authenticate(String username, String password, String tipoUsuario) throws Exception {
-		log.info("########## JEEM: Se accede a UserAdministrationController.authenticate");
+		log.info("########## JEEM: Se accede a CustomerCareCenterController.authenticate");
 		log.info("########## JEEM: Authentication Manager: {}", authenticationManager);
 		try {
 			List<GrantedAuthority> authorities = new ArrayList<>();

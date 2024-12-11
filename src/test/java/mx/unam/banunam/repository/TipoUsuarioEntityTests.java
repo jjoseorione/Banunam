@@ -1,7 +1,7 @@
 package mx.unam.banunam.repository;
 
-import mx.unam.banunam.auth.model.TipoUsuario;
-import mx.unam.banunam.auth.repository.TipoUsuarioRepository;
+import mx.unam.banunam.auth.usuario.model.TipoUsuario;
+import mx.unam.banunam.auth.usuario.repository.TipoUsuarioRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

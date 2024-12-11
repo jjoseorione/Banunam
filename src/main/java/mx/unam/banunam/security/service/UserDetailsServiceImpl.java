@@ -1,8 +1,8 @@
 package mx.unam.banunam.security.service;
 
 import lombok.extern.slf4j.Slf4j;
-import mx.unam.banunam.auth.model.Usuario;
-import mx.unam.banunam.auth.repository.UsuarioRepository;
+import mx.unam.banunam.auth.usuario.model.Usuario;
+import mx.unam.banunam.auth.usuario.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

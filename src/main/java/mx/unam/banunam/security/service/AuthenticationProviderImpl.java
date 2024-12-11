@@ -2,8 +2,8 @@ package mx.unam.banunam.security.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mx.unam.banunam.auth.model.Usuario;
-import mx.unam.banunam.auth.repository.UsuarioRepository;
+import mx.unam.banunam.auth.usuario.model.Usuario;
+import mx.unam.banunam.auth.usuario.repository.UsuarioRepository;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;

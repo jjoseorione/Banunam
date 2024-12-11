@@ -1,14 +1,14 @@
-package mx.unam.banunam.auth.service.impl;
+package mx.unam.banunam.auth.usuario.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import mx.unam.banunam.auth.dto.UsuarioDTO;
+import mx.unam.banunam.auth.usuario.dto.UsuarioDTO;
 import mx.unam.banunam.auth.exception.UsuarioAlreadyExistsException;
 import mx.unam.banunam.auth.exception.UsuarioNotFoundException;
-import mx.unam.banunam.auth.model.TipoUsuario;
-import mx.unam.banunam.auth.model.Usuario;
-import mx.unam.banunam.auth.repository.TipoUsuarioRepository;
-import mx.unam.banunam.auth.repository.UsuarioRepository;
-import mx.unam.banunam.auth.service.UsuarioService;
+import mx.unam.banunam.auth.usuario.model.TipoUsuario;
+import mx.unam.banunam.auth.usuario.model.Usuario;
+import mx.unam.banunam.auth.usuario.repository.TipoUsuarioRepository;
+import mx.unam.banunam.auth.usuario.repository.UsuarioRepository;
+import mx.unam.banunam.auth.usuario.service.UsuarioService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

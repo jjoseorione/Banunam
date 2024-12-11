@@ -3,14 +3,13 @@ package mx.unam.banunam.security.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-import mx.unam.banunam.auth.dto.UsuarioDTO;
+import mx.unam.banunam.auth.usuario.dto.UsuarioDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.stream.Collectors;
 

@@ -2,7 +2,7 @@ package mx.unam.banunam.security;
 
 
 import lombok.extern.slf4j.Slf4j;
-import mx.unam.banunam.auth.repository.UsuarioRepository;
+import mx.unam.banunam.auth.usuario.repository.UsuarioRepository;
 import mx.unam.banunam.security.jwt.JWTAuthenticationFilter;
 import mx.unam.banunam.security.jwt.JWTTokenProvider;
 import mx.unam.banunam.security.logout.CustomLogoutSuccessHandler;
@@ -14,20 +14,16 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.security.SecureRandom;
 

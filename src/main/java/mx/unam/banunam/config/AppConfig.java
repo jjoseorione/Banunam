@@ -1,12 +1,11 @@
 package mx.unam.banunam.config;
 
-import mx.unam.banunam.auth.dto.UsuarioDTO;
-import mx.unam.banunam.auth.model.Usuario;
+import mx.unam.banunam.auth.usuario.dto.UsuarioDTO;
+import mx.unam.banunam.auth.usuario.model.Usuario;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 
 
 @Configuration
