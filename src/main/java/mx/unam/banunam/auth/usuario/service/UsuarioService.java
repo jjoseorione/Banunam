@@ -9,5 +9,5 @@ public interface UsuarioService {
     Usuario convertirEnEntidad(UsuarioDTO dto);
     UsuarioDTO buscarUsuarioPorId(Integer id);
     UsuarioDTO salvar(UsuarioDTO usuario);
-    UsuarioDTO buscarUsuarioPorUsuario(String correo);
+    UsuarioDTO buscarUsuarioPorUsuario(String usuario);
 }

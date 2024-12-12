@@ -11,15 +11,15 @@
 <body>
 	<div th:fragment="navbar">
 		<nav class="navbar">
-			<h1 class="logo">Banunam - Customer Care Center</h1>
+			<h1 class="logo">Banunam - Banca en Línea</h1>
 			<ul class="nav-links">
-				<li class="nav-item"><a href="/customer-care-center/">Home</a></li>
+				<li class="nav-item"><a href="/banca-en-linea/">Home</a></li>
 <!--				<li sec:authorize="hasAuthority('EXEC')" class="nav-item"><a href="/user">User</a></li>-->
 <!--				<li sec:authorize="hasAuthority('ADMIN')" class="nav-item"><a href="/admin">Admin</a></li>-->
-				<li sec:authorize="!isAuthenticated()" class="nav-item"><a href="/customer-care-center/login">Login</a></li>
-				<li sec:authorize="isAuthenticated()" class="nav-item"><a href="/customer-care-center/onlyAuthorized">Only Authorized</a></li>
+				<li sec:authorize="!isAuthenticated()" class="nav-item"><a href="/banca-en-linea/login">Login</a></li>
+				<li sec:authorize="isAuthenticated()" class="nav-item"><a href="/banca-en-linea/onlyAuthorized">Only Authorized</a></li>
 				<li sec:authorize="isAuthenticated()" class="nav-item">
-					<form class="link" th:action="@{/customer-care-center/doLogout}" method="post">
+					<form class="link" th:action="@{/banca-en-linea/doLogout}" method="post">
 						<input class="link" type="submit" value="Logout"/>
 					</form></li>
 			</ul>

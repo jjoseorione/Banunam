@@ -3,10 +3,14 @@ package mx.unam.banunam.security;
 
 import lombok.extern.slf4j.Slf4j;
 import mx.unam.banunam.auth.usuario.repository.UsuarioRepository;
-import mx.unam.banunam.security.jwt.JWTAuthenticationFilter;
-import mx.unam.banunam.security.jwt.JWTTokenProvider;
+import mx.unam.banunam.security.jwt.JWTAuthenticationFilterCliente;
+import mx.unam.banunam.security.jwt.JWTAuthenticationFilterUsuario;
+import mx.unam.banunam.security.jwt.JWTTokenProviderCliente;
+import mx.unam.banunam.security.jwt.JWTTokenProviderUsuario;
 import mx.unam.banunam.security.logout.CustomLogoutSuccessHandler;
-import mx.unam.banunam.security.service.AuthenticationProviderImpl;
+import mx.unam.banunam.security.service.ClienteAuthenticationProvider;
+import mx.unam.banunam.security.service.UsuarioAuthenticationProvider;
+import mx.unam.banunam.system.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,7 +40,7 @@ public class SecurityConfiguration {
     @Order(1)
     public static class App1ConfigurationAdapter{
         @Autowired
-        private JWTTokenProvider tokenProvider;
+        private JWTTokenProviderUsuario tokenProvider;
         @Autowired
         private CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
@@ -61,7 +65,7 @@ public class SecurityConfiguration {
                             .logoutSuccessHandler(customLogoutSuccessHandler)
                             .clearAuthentication(true)
                             .invalidateHttpSession(true))
-                    .addFilterAfter(new JWTAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterAfter(new JWTAuthenticationFilterUsuario(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                     .csrf(AbstractHttpConfigurer::disable)
                     .cors(Customizer.withDefaults())
                     .sessionManagement(session -> session
@@ -75,7 +79,7 @@ public class SecurityConfiguration {
     @Order(2)
     public static class App2ConfigurationAdapter{
         @Autowired
-        private JWTTokenProvider tokenProvider;
+        private JWTTokenProviderUsuario tokenProvider;
         @Autowired
         private CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
@@ -100,7 +104,7 @@ public class SecurityConfiguration {
                             .logoutSuccessHandler(customLogoutSuccessHandler)
                             .clearAuthentication(true)
                             .invalidateHttpSession(true))
-                    .addFilterAfter(new JWTAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+                    .addFilterAfter(new JWTAuthenticationFilterUsuario(tokenProvider), UsernamePasswordAuthenticationFilter.class)
                     .csrf(AbstractHttpConfigurer::disable)
                     .cors(Customizer.withDefaults())
                     .sessionManagement(session -> session
@@ -108,8 +112,46 @@ public class SecurityConfiguration {
             ;
             return http.build();
         }
+    }
 
+    //Configuration de Cliente
+    @Configuration
+    @Order(3)
+    public static class App3ConfigurationAdapter{
+        @Autowired
+        private JWTTokenProviderCliente tokenProvider;
+        @Autowired
+        private CustomLogoutSuccessHandler customLogoutSuccessHandler;
 
+        @Bean
+        public SecurityFilterChain securityFilterChain3(HttpSecurity http) throws Exception {
+            log.info("########## JEEM: Inicialización de Bean SecurityFilterChain2");
+            http
+                    .securityMatcher("/banca-en-linea/**")
+                    .authorizeHttpRequests((authorize) -> authorize
+                            .requestMatchers("/css/**", "/favicon.ico", "/banca-en-linea/", "/banca-en-linea/token").permitAll()
+                            .anyRequest().authenticated()
+                    )
+                    .formLogin(login -> login
+                            .loginPage("/banca-en-linea/login")
+                            .successForwardUrl("/banca-en-linea/login_success_handler")
+                            .failureForwardUrl("/banca-en-linea/login_failure_handler")
+                            .permitAll())
+                    .logout(logout -> logout
+                            .logoutUrl("/banca-en-linea/doLogout")
+                            .logoutSuccessUrl("/index")
+                            .deleteCookies("JSESSIONID") //NEW Cookies to clear
+                            .logoutSuccessHandler(customLogoutSuccessHandler)
+                            .clearAuthentication(true)
+                            .invalidateHttpSession(true))
+                    .addFilterAfter(new JWTAuthenticationFilterCliente(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+                    .csrf(AbstractHttpConfigurer::disable)
+                    .cors(Customizer.withDefaults())
+                    .sessionManagement(session -> session
+                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            ;
+            return http.build();
+        }
     }
 
 
@@ -117,26 +159,47 @@ public class SecurityConfiguration {
 //    private UserDetailsService uds;
     @Autowired
     private UsuarioRepository usuarioRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
+    @Bean(name = "passwordEncoderUser")
+    PasswordEncoder passwordEncoderUser() {
         return new BCryptPasswordEncoder(11, new SecureRandom());
     }
 
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//        authenticationProvider.setUserDetailsService(uds);
-//        authenticationProvider.setPasswordEncoder(passwordEncoder());
-//        return authenticationProvider;
-        return new AuthenticationProviderImpl(usuarioRepository, passwordEncoder());
+    @Bean(name = "passwordEncoderCliente")
+    PasswordEncoder passwordEncoderClient() {
+        return new BCryptPasswordEncoder(16, new SecureRandom());
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+    @Bean(name = "usuarioAuthenticationProvider")
+    public AuthenticationProvider usuarioAuthenticationProvider() {
+        return new UsuarioAuthenticationProvider(usuarioRepository, passwordEncoderUser());
+    }
+
+    @Bean(name = "clienteAuthenticationProvider")
+    public AuthenticationProvider clienteAuthenticationProvider() {
+        return new ClienteAuthenticationProvider(clienteRepository, passwordEncoderClient());
+    }
+
+    @Bean(name = "usuarioAuthenticationManager")
+    public AuthenticationManager authenticationManagerUser(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
         //your AuthenticationProvider must return UserDetails object
-        AuthenticationProvider ap = authenticationProvider();
+        AuthenticationProvider ap = usuarioAuthenticationProvider();
+        log.info("########## JEEM: Se recibe el AuthenticationProvider:");
+        log.info("{}",ap);
+        AuthenticationManager am = new ProviderManager(ap);
+        log.info("########## JEEM: Se crea bean AuthenticationManager:");
+        log.info("{}",am);
+        return am;
+    }
+
+    @Bean(name = "clienteAuthenticationManager")
+    public AuthenticationManager authenticationManagerClient(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+        //your AuthenticationProvider must return UserDetails object
+        AuthenticationProvider ap = clienteAuthenticationProvider();
         log.info("########## JEEM: Se recibe el AuthenticationProvider:");
         log.info("{}",ap);
         AuthenticationManager am = new ProviderManager(ap);

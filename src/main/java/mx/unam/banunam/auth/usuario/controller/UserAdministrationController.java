@@ -8,11 +8,11 @@ import mx.unam.banunam.auth.usuario.dto.UsuarioDTO;
 import mx.unam.banunam.auth.exception.UsuarioNotFoundException;
 import mx.unam.banunam.auth.usuario.service.UsuarioService;
 import mx.unam.banunam.auth.util.PropiedadesPerfiles;
-import mx.unam.banunam.security.jwt.JWTTokenProvider;
+import mx.unam.banunam.security.jwt.JWTTokenProviderUsuario;
 import mx.unam.banunam.security.request.JwtRequest;
 import mx.unam.banunam.security.request.LoginUserRequest;
-import mx.unam.banunam.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -36,16 +36,15 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequestMapping(path = "/user-administration/")
-@PreAuthorize("hasRole(${usuario.tipo1})")
+@PreAuthorize("hasRole(${perfil.usuario.tipo1})")
 public class UserAdministrationController {
 	@Autowired
 	private UsuarioService usuarioService;
 	@Autowired
+	@Qualifier("usuarioAuthenticationManager")
 	private AuthenticationManager authenticationManager;
 	@Autowired
-	private JWTTokenProvider jwtTokenProvider;
-	@Autowired
-	private UserDetailsServiceImpl userDetailsService;
+	private JWTTokenProviderUsuario jwtTokenProviderUsuario;
 	@Autowired
 	private PropiedadesPerfiles propiedadesPerfiles;
 
@@ -75,14 +74,19 @@ public class UserAdministrationController {
 		return "/user-administration/login";
 	}
 
+	@GetMapping("/onlyAuthorized")
+	public String onlyAuthorized(){
+		return "/user-administration/onlyAuth";
+	}
+
 
 	@PostMapping("/token")
 	public String createAuthenticationToken(Model model, HttpSession session,
 											@ModelAttribute LoginUserRequest loginUserRequest, HttpServletResponse res, RedirectAttributes flash) throws Exception {
 
-		final String TIPO_USUARIO = propiedadesPerfiles.getTipo1();
+		final String TIPO_USUARIO = propiedadesPerfiles.getUsuarioTipo1();
 		log.info("LoginUserRequest {}", loginUserRequest);
-		log.info("########## Perfil requerido: {}", propiedadesPerfiles.getTipo1());		//Perfil tipo2: ADMIN
+		log.info("########## Perfil requerido: {}", propiedadesPerfiles.getUsuarioTipo1());		//Perfil tipo2: ADMIN
 		try {
 			UsuarioDTO user = usuarioService.buscarUsuarioPorUsuario(loginUserRequest.getUsername());
 			//Filtro que verifica que el usuario sea del tipo requerido
@@ -92,10 +96,10 @@ public class UserAdministrationController {
 				Authentication authentication = authenticate(loginUserRequest.getUsername(),
 						loginUserRequest.getPassword(), TIPO_USUARIO);
 				log.info("authentication {}", authentication);
-				String jwtToken = jwtTokenProvider.generateJwtToken(authentication, user);
+				String jwtToken = jwtTokenProviderUsuario.generateJwtToken(authentication, user);
 				log.info("jwtToken {}", jwtToken);
 				JwtRequest jwtRequest = new JwtRequest(jwtToken, user.getIdUsuario(), user.getUsuario(),
-						jwtTokenProvider.getExpiryDuration(), authentication.getAuthorities());
+						jwtTokenProviderUsuario.getExpiryDuration(), authentication.getAuthorities());
 				log.info("jwtRequest {}", jwtRequest);
 				Cookie cookie = new Cookie("token", jwtToken);
 				cookie.setMaxAge(Integer.MAX_VALUE);

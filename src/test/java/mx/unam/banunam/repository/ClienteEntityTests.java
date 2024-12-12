@@ -1,11 +1,9 @@
 package mx.unam.banunam.repository;
 
 import mx.unam.banunam.system.model.Cliente;
+import mx.unam.banunam.system.model.TarjetaDebito;
 import mx.unam.banunam.system.repository.ClienteRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
@@ -66,4 +64,18 @@ public class ClienteEntityTests{
         clienteRepository.save(cliente);
         System.out.println("El nuevo cliente es: " + cliente);
     }
+
+    @DisplayName(value = "Encontrar por num TDD")
+    @Test
+    void findClienteByNoTDD(){
+        System.out.println("Encontrar cliente por num TDD");
+        final String NO_TARJETA = "1709632515478587";
+        final Integer NO_CLIENTE_ESPERADO = 3;
+        Cliente cliente = clienteRepository.findByNoTarjetaDebito(NO_TARJETA).orElse(null);
+        Assertions.assertNotNull(cliente);
+        Assertions.assertEquals(NO_CLIENTE_ESPERADO ,cliente.getNoCliente());
+        System.out.println(cliente);
+    }
+
+
 }

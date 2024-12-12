@@ -19,13 +19,13 @@ import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
-public class AuthenticationProviderImpl implements AuthenticationProvider {
+public class UsuarioAuthenticationProvider implements AuthenticationProvider {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public Authentication authenticate(Authentication authentication) {
-        log.info("JEEM: Security - AuthenticationProviderImpl.authenticate");
+        log.info("JEEM: Security - UsuarioAuthenticationProvider.authenticate");
         String username = authentication.getName();
         String pwd = authentication.getCredentials().toString();
         Usuario usuario = usuarioRepository.findByUsuario(username)

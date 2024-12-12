@@ -56,23 +56,23 @@ INSERT INTO origen_destino_movimientos VALUES (NULL, 'Cajero / Taquilla');
 -----------------Inserción de CLIENTES
 ---------------------------noCliente, nombre, apPat, apMat, rfc, fechaNac, email, contrasena, telefono
 --Cliente 1 (Sólo cliente)
-INSERT INTO clientes VALUES(NULL, 'Francisco', 'Sánchez', 'Hinojosa', 'FSH940508', '1994-05-08', 'francisco.hinojosa@gmail.com', '$2a$11$cahGZAyWLpWypsZ3gBTuieJd7mOf4Pv7i9jlU.x91jgH4qaHpap3m', '5545812578');
+INSERT INTO clientes VALUES(NULL, 'Francisco', 'Sánchez', 'Hinojosa', 'FSH940508', '1994-05-08', 'francisco.hinojosa@gmail.com', '$2a$16$.Jzzn5XBRvHe2HMZIuvMouquHjNMXPs0NhhjFFt1S4hqr3XWRkCYa', '5545812578');
 --Cliente 2 (Cliente y cuentas)
-INSERT INTO clientes VALUES(NULL, 'Suleima', 'Álvarez', 'Granados', 'SAG851213', '1985-12-13', 'suleima.alvarez@gmail.com', '$2a$11$cahGZAyWLpWypsZ3gBTuieJd7mOf4Pv7i9jlU.x91jgH4qaHpap3m', '5578412569');
+INSERT INTO clientes VALUES(NULL, 'Suleima', 'Álvarez', 'Granados', 'SAG851213', '1985-12-13', 'suleima.alvarez@gmail.com', '$2a$16$.Jzzn5XBRvHe2HMZIuvMouquHjNMXPs0NhhjFFt1S4hqr3XWRkCYa', '5578412569');
 --Cliente 3 (Completo)
-INSERT INTO clientes VALUES(NULL, 'Ramiro', 'Solares', 'Fuentes', 'RSF870224', '1987-02-24', 'ramiro.solares@gmail.com', '$2a$11$cahGZAyWLpWypsZ3gBTuieJd7mOf4Pv7i9jlU.x91jgH4qaHpap3m', '5548796325');
+INSERT INTO clientes VALUES(NULL, 'Ramiro', 'Solares', 'Fuentes', 'RSF870224', '1987-02-24', 'ramiro.solares@gmail.com', '$2a$16$.Jzzn5XBRvHe2HMZIuvMouquHjNMXPs0NhhjFFt1S4hqr3XWRkCYa', '5548796325');
 --Cliente 4 (Completo sólo débito)
-INSERT INTO clientes VALUES(NULL, 'Juan Carlos', 'Olivares', 'Olalde', 'JOO780301', '1978-03-01', 'juancarlos.olivares@gmail.com', '$2a$11$cahGZAyWLpWypsZ3gBTuieJd7mOf4Pv7i9jlU.x91jgH4qaHpap3m', '5678258965');
+INSERT INTO clientes VALUES(NULL, 'Juan Carlos', 'Olivares', 'Olalde', 'JOO780301', '1978-03-01', 'juancarlos.olivares@gmail.com', '$2a$16$.Jzzn5XBRvHe2HMZIuvMouquHjNMXPs0NhhjFFt1S4hqr3XWRkCYa', '5678258965');
 --Cliente 5 (Completo sólo débito)
-INSERT INTO clientes VALUES(NULL, 'Alfonso', 'Fuentes', 'de la Oca', 'AFO651214', '1965-12-14', 'alfonso.fuentes@gmail.com', '$2a$11$cahGZAyWLpWypsZ3gBTuieJd7mOf4Pv7i9jlU.x91jgH4qaHpap3m', '5696154785');
+INSERT INTO clientes VALUES(NULL, 'Alfonso', 'Fuentes', 'de la Oca', 'AFO651214', '1965-12-14', 'alfonso.fuentes@gmail.com', '$2a$16$.Jzzn5XBRvHe2HMZIuvMouquHjNMXPs0NhhjFFt1S4hqr3XWRkCYa', '5696154785');
 --Cliente 6 (Completo débito y crédito)
-INSERT INTO clientes VALUES(NULL, 'Selene', 'Samariego', 'Vergara', 'SSV960430', '1996-04-30', 'selene.samariego@gmail.com', '$2a$11$cahGZAyWLpWypsZ3gBTuieJd7mOf4Pv7i9jlU.x91jgH4qaHpap3m', '5521023058');
+INSERT INTO clientes VALUES(NULL, 'Selene', 'Samariego', 'Vergara', 'SSV960430', '1996-04-30', 'selene.samariego@gmail.com', '$2a$16$.Jzzn5XBRvHe2HMZIuvMouquHjNMXPs0NhhjFFt1S4hqr3XWRkCYa', '5521023058');
 --Cliente 7 (Completo débito y crédito)
-INSERT INTO clientes VALUES(NULL, 'Benito', 'López', 'Fernandez', 'BLF941109', '1994-11-09', 'benito.lopez@gmail.com', '$2a$11$cahGZAyWLpWypsZ3gBTuieJd7mOf4Pv7i9jlU.x91jgH4qaHpap3m', '5509976632');
+INSERT INTO clientes VALUES(NULL, 'Benito', 'López', 'Fernandez', 'BLF941109', '1994-11-09', 'benito.lopez@gmail.com', '$2a$16$.Jzzn5XBRvHe2HMZIuvMouquHjNMXPs0NhhjFFt1S4hqr3XWRkCYa', '5509976632');
 --Cliente 8 (Completo débito y préstamo)
-INSERT INTO clientes VALUES(NULL, 'Valentina', 'Rodríguez', 'Sepúlveda', 'VRS890528', '1989-05-28', 'valentina.rodriguez@gmail.com', '$2a$11$cahGZAyWLpWypsZ3gBTuieJd7mOf4Pv7i9jlU.x91jgH4qaHpap3m', '5602287810');
+INSERT INTO clientes VALUES(NULL, 'Valentina', 'Rodríguez', 'Sepúlveda', 'VRS890528', '1989-05-28', 'valentina.rodriguez@gmail.com', '$2a$16$.Jzzn5XBRvHe2HMZIuvMouquHjNMXPs0NhhjFFt1S4hqr3XWRkCYa', '5602287810');
 --Cliente 9 (Completo débito y préstamo)
-INSERT INTO clientes VALUES(NULL, 'María Luisa', 'Álvarez', 'Villa', 'MAV011024', '2001-10-24', 'marialuisa.alvarez@gmail.com', '$2a$11$cahGZAyWLpWypsZ3gBTuieJd7mOf4Pv7i9jlU.x91jgH4qaHpap3m', '5633657884');
+INSERT INTO clientes VALUES(NULL, 'María Luisa', 'Álvarez', 'Villa', 'MAV011024', '2001-10-24', 'marialuisa.alvarez@gmail.com', '$2a$16$.Jzzn5XBRvHe2HMZIuvMouquHjNMXPs0NhhjFFt1S4hqr3XWRkCYa', '5633657884');
 
 --domicilios
 --id_domicilio, calle, num_interior, num_exterior, no_cliente, id_colonia

@@ -3,6 +3,7 @@ package mx.unam.banunam.security.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import mx.unam.banunam.auth.cliente.dto.ClienteAuthDTO;
 import mx.unam.banunam.auth.usuario.dto.UsuarioDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -15,12 +16,12 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class JWTTokenProvider {
+public class JWTTokenProviderCliente {
     private String secret;
     private int jwtExpirationInMs;
     private SecretKey key;
 
-    @Value("${jwt.secret}")
+    @Value("${jwt.secretClient}")
     public void setSecret(String secret) {
         this.secret = secret;
     }
@@ -30,18 +31,18 @@ public class JWTTokenProvider {
         this.jwtExpirationInMs = jwtExpirationInMs;
     }
 
-    public String generateJwtToken(Authentication authentication, UsuarioDTO user) {
-        Claims claims = Jwts.claims().setSubject("UNAM").setIssuer(user.getUsuario())
+    public String generateJwtToken(Authentication authentication, ClienteAuthDTO clienteAuthDTO) {
+        Claims claims = Jwts.claims().setSubject("UNAM").setIssuer(clienteAuthDTO.getNoCliente().toString())
                 .setAudience("JAVA");
         claims.put("principal", authentication.getPrincipal());
         claims.put("auth", authentication.getAuthorities().stream().map(s -> new SimpleGrantedAuthority(s.getAuthority()))
                 .collect(Collectors.toList()));
-        claims.put("issid", user.getIdUsuario());
-        claims.put("issname", user.getNombre() + " " + user.getApellido1());
+        claims.put("issid", clienteAuthDTO.getNoCliente());
+        claims.put("issname", clienteAuthDTO.getNombre() + " " + clienteAuthDTO.getApellido1());
         key = Keys.hmacShaKeyFor(secret.getBytes());
         long exp = System.currentTimeMillis() + jwtExpirationInMs;
 
-        log.info("JEEM - Security. Se genera el token en JWTTokenProvider.generateJwtToken");
+        log.info("JEEM - Security. Se genera el token en JWTTokenProviderCliente.generateJwtToken");
         log.info("JEEM - Security. Expiración de token: {}", new Date(exp));
         return Jwts.builder()
                 .setClaims(claims)

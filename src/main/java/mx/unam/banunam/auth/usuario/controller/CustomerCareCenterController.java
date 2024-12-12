@@ -8,11 +8,11 @@ import mx.unam.banunam.auth.usuario.dto.UsuarioDTO;
 import mx.unam.banunam.auth.exception.UsuarioNotFoundException;
 import mx.unam.banunam.auth.usuario.service.UsuarioService;
 import mx.unam.banunam.auth.util.PropiedadesPerfiles;
-import mx.unam.banunam.security.jwt.JWTTokenProvider;
+import mx.unam.banunam.security.jwt.JWTTokenProviderUsuario;
 import mx.unam.banunam.security.request.JwtRequest;
 import mx.unam.banunam.security.request.LoginUserRequest;
-import mx.unam.banunam.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -36,16 +36,15 @@ import java.util.List;
 @Slf4j
 @Controller
 @RequestMapping(path = "/customer-care-center/")
-@PreAuthorize("hasRole(${usuario.tipo2})")
+@PreAuthorize("hasRole(${perfil.usuario.tipo2})")
 public class CustomerCareCenterController {
 	@Autowired
 	private UsuarioService usuarioService;
 	@Autowired
+	@Qualifier("usuarioAuthenticationManager")
 	private AuthenticationManager authenticationManager;
 	@Autowired
-	private JWTTokenProvider jwtTokenProvider;
-	@Autowired
-	private UserDetailsServiceImpl userDetailsService;
+	private JWTTokenProviderUsuario jwtTokenProviderUsuario;
 	@Autowired
 	private PropiedadesPerfiles propiedadesPerfiles;
 
@@ -53,8 +52,8 @@ public class CustomerCareCenterController {
 	@GetMapping("/")
 	public String home(Model model) {
 
-		log.info("Entra a raíz");
-		model.addAttribute("text", "Hola");
+		log.info("Entra a customer-care-center raíz");
+		model.addAttribute("text", "CCC");
 		return "/customer-care-center/home";
 	}
 
@@ -75,9 +74,9 @@ public class CustomerCareCenterController {
 		return "/customer-care-center/login";
 	}
 
-	@GetMapping("/prueba1")
-	public String prueba(){
-		return "prueba1";
+	@GetMapping("/onlyAuthorized")
+	public String onlyAuthorized(){
+		return "/customer-care-center/onlyAuth";
 	}
 
 
@@ -85,9 +84,9 @@ public class CustomerCareCenterController {
 	public String createAuthenticationToken(Model model, HttpSession session,
 											@ModelAttribute LoginUserRequest loginUserRequest, HttpServletResponse res, RedirectAttributes flash) throws Exception {
 
-		final String TIPO_USUARIO = propiedadesPerfiles.getTipo2();
+		final String TIPO_USUARIO = propiedadesPerfiles.getUsuarioTipo2();
 		log.info("LoginUserRequest {}", loginUserRequest);
-		log.info("########## Perfil requerido: {}", propiedadesPerfiles.getTipo2());		//Perfil tipo2: EXEC
+		log.info("########## Perfil requerido: {}", propiedadesPerfiles.getUsuarioTipo2());		//Perfil tipo2: EXEC
 		try {
 			UsuarioDTO user = usuarioService.buscarUsuarioPorUsuario(loginUserRequest.getUsername());
 			//Filtro que verifica que el usuario sea del tipo requerido
@@ -97,10 +96,10 @@ public class CustomerCareCenterController {
 				Authentication authentication = authenticate(loginUserRequest.getUsername(),
 						loginUserRequest.getPassword(), TIPO_USUARIO);
 				log.info("authentication {}", authentication);
-				String jwtToken = jwtTokenProvider.generateJwtToken(authentication, user);
+				String jwtToken = jwtTokenProviderUsuario.generateJwtToken(authentication, user);
 				log.info("jwtToken {}", jwtToken);
 				JwtRequest jwtRequest = new JwtRequest(jwtToken, user.getIdUsuario(), user.getUsuario(),
-						jwtTokenProvider.getExpiryDuration(), authentication.getAuthorities());
+						jwtTokenProviderUsuario.getExpiryDuration(), authentication.getAuthorities());
 				log.info("jwtRequest {}", jwtRequest);
 				Cookie cookie = new Cookie("token", jwtToken);
 				cookie.setMaxAge(Integer.MAX_VALUE);

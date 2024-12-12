@@ -8,9 +8,12 @@ import org.springframework.stereotype.Component;
 @Getter
 public final class PropiedadesPerfiles {
 
-    @Value("${usuario.tipo1}")
-    private String tipo1;
+    @Value("${perfil.usuario.tipo1}")
+    private String usuarioTipo1;
 
-    @Value("${usuario.tipo2}")
-    private String tipo2;
+    @Value("${perfil.usuario.tipo2}")
+    private String usuarioTipo2;
+
+    @Value("${perfil.cliente.tipo1}")
+    private String clienteTipo1;
 }

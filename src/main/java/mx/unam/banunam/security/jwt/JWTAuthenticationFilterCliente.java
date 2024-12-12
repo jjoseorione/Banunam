@@ -22,10 +22,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class JWTAuthenticationFilter extends OncePerRequestFilter {
-    private final JWTTokenProvider tokenProvider;
+public class JWTAuthenticationFilterCliente extends OncePerRequestFilter {
+    private final JWTTokenProviderCliente tokenProvider;
 
-    public JWTAuthenticationFilter(JWTTokenProvider tokenProvider) {
+    public JWTAuthenticationFilterCliente(JWTTokenProviderCliente tokenProvider) {
         this.tokenProvider = tokenProvider;
     }
 
@@ -33,15 +33,12 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain)
             throws ServletException, IOException {
-        //log.info("JEEM: Security - Entra en JWTAuthenticationFilter.doFilterInternal");
         String jwt = "";
         if(request.getCookies() != null)
             for(Cookie cookie: request.getCookies())
-                if(cookie.getName().equals("token"))
+                if(cookie.getName().equals("tokenCliente"))
                     jwt = cookie.getValue();
-        //log.info("JEEM: Security - El token es {} ", jwt);
         if(jwt == null || jwt.equals("")){
-            //log.info("JEEM: Security - El token es nulo o vacío");
             filterChain.doFilter(request, response);
             return;
         }
