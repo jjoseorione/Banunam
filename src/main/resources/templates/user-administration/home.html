@@ -1,21 +1,36 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="https://www.thymeleaf.org" lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Spring Boot UNAM</title>
-<link rel="stylesheet" th:href="@{/css/style.css}">
+<head th:replace="~{layouts/layout-admin :: head}">
 </head>
-<body>
+<body class="bg-secondary">
 	<div th:replace="~{layouts/layout-admin :: navbar}"></div>
-	<div class="main">
-		<div th:replace="~{layouts/layout-admin :: main-text}"></div>
-<!--		<div class="text">-->
-<!--			<h2 th:text="${text}"></h2>-->
-<!--		</div>-->
-		<div th:replace="~{layouts/layout-ccc :: footer}"></div>
+	<div class="container mt-5">
+		<table class="table table-dark table-striped" th:if="${!usuarios.isEmpty()}">
+			<thead>
+				<th>Usuario</th>
+				<th>Correo</th>
+				<th>Estatus</th>
+				<th>Tipo de Usuario</th>
+				<th></th>
+			</thead>
+			<tbody>
+				<tr th:each="usuario : ${usuarios}">
+					<td th:text="${usuario.usuario}"></td>
+					<td th:text="${usuario.correo}"></td>
+					<td th:text="${usuario.estatus}"></td>
+					<td th:text="${usuario.tipoUsuario}"></td>
+					<td style="text-align: center">
+						<a th:href="@{/user-administration/usuarios/{id}(id = ${usuario.idUsuario})}" class="btn btn-success"> Detalle</a>
+						<a th:href="@{/user-administration/usuarios/{id}/editar(id = ${usuario.idUsuario})}" class="btn btn-primary"> Editar</a>
+						<a class="btn btn-danger" th:attr="onclick=|eliminarUsuario('${usuario.idUsuario}', '${usuario.usuario}', '${#ctx.session.usuarioFirmado}')|"> Eliminar</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div th:replace="~{layouts/layout-admin :: footer}"></div>
 	</div>
 </body>
 </html>

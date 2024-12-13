@@ -36,6 +36,7 @@ public class Usuario {
     private LocalDate fechaExpContrasena;
 
     @PrePersist
+    @PreUpdate
     public void prePersist(){
         if (apellido2 == null)
             apellido2 = "";
@@ -50,7 +51,7 @@ public class Usuario {
     }
 
     public void setIntentos(Integer intentos) {
-        this.intentos = intentos.byteValue();
+        this.intentos = intentos == null ? null : intentos.byteValue();
     }
 
     public Integer getIntentos() {

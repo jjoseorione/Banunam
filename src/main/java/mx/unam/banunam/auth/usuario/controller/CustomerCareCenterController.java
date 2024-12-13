@@ -88,7 +88,7 @@ public class CustomerCareCenterController {
 		log.info("LoginUserRequest {}", loginUserRequest);
 		log.info("########## Perfil requerido: {}", propiedadesPerfiles.getUsuarioTipo2());		//Perfil tipo2: EXEC
 		try {
-			UsuarioDTO user = usuarioService.buscarUsuarioPorUsuario(loginUserRequest.getUsername());
+			UsuarioDTO user = usuarioService.buscarUsuarioPorUsuario(loginUserRequest.getUsername(), true);
 			//Filtro que verifica que el usuario sea del tipo requerido
 			log.info("########## JEEM: Filtro: estatus={} tipoUsuario={} fechaExpUsuario={}",
 					user.getEstatus(), user.getTipoUsuario(), user.getFechaExpUsuario());

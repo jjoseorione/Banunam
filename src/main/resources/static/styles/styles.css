@@ -24,12 +24,7 @@
 	border-bottom: 2px solid dodgerblue;
 	font-family: serif;
 }*/
-.tituloFormulario{
-	font-size: 2em;
-	font-weight: bold;
-	text-align: center;
-	border-bottom: 2px solid blue;
-}
+/*
 .fondo{
     background-color: #444;
 }
@@ -92,16 +87,46 @@
     background-color: #222;
     border: 2px solid #222;
 }
-.tituloPagina{
-    font-size: 2.5rem;
-    text-align: right;
-    color:  white;
-    background-color: #333;
-    padding: 1rem;
-    padding-right: 2vw;
-    letter-spacing: 0.3rem;
-}
 .tituloPagina>span{
     border: 0.2rem double #2A6A9E;
     background-color: #333;
+}*/
+.b-example-divider {
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
+  
+.bi {
+    vertical-align: -.125em;
+    fill: currentColor;
+}
+
+/*-----------------------------------------------------------------------------------------------*/
+
+.tituloLoginUA{
+	font-size: 2em;
+	font-weight: bold;
+	text-align: center;
+	border-bottom: 2px solid blue;
+}
+
+.footer{
+    display: float;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+  
+.tituloPagina{
+    border: 0.2rem double #2A6A9E;
+    font-size: 1.5rem;
+    text-align: right;
+    color:  white;
+    padding: 0.1rem;
+    padding-right: 2vw;
+    padding-left: 2vw;
+    letter-spacing: 0.3rem;
 }

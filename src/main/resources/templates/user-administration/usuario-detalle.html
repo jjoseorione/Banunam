@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="https://www.thymeleaf.org" lang="en">
+<head th:replace="~{layouts/layout-admin :: head}">
+</head>
+<body class="bg-secondary">
+	<div th:replace="~{layouts/layout-admin :: navbar}"></div>
+	<div class="container mt-5">
+		<div class="card text-white bg-dark mb-3" style="max-width: 800px;" th:if="${usuario!=null}">
+			<div class="row g-0">
+				<div class="col-md-3 mx-2 my-2">
+					<img th:src="@{/images/generic-person-icon-profile.png}" class="img-fluid rounded-start bg-light px-3 py-3" alt="...">
+				</div>
+				<div class="col-md-8">
+					<div class="card-body">
+						<table class="table table-dark table-striped">
+							<tbody>
+							<tr><th>Usuario: </th><td th:text="${usuario.usuario}"></td></tr>
+							<tr><th>Nombre: </th><td th:text="${usuario.nombre}"></td></tr>
+							<tr><th>Prim Apellido:</th><td th:text="${usuario.apellido1}"></td></tr>
+							<tr><th>Seg Apellido:</th><td th:text="${usuario.apellido2}"></td></tr>
+							<tr><th>Correo:</th><td th:text="${usuario.correo}"></td></tr>
+							<tr><th>Intentos:</th><td th:text="${usuario.intentos}"></td></tr>
+							<tr><th>Estatus:</th><td th:text="${usuario.estatus}"></td></tr>
+							<tr><th>Tipo Usuario:</th><td th:text="${usuario.tipoUsuario}"></td></tr>
+							<tr><th>Fecha Exp Usuario:</th><td th:text="${usuario.fechaExpUsuario}"></td></tr>
+							<tr><th>Fecha Exp Contraseña:</th><td th:text="${usuario.fechaExpContrasena}"></td></tr>
+							</tbody>
+						</table>
+						<a th:href="@{/user-administration/}" class="btn btn-success">Volver</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="~{layouts/layout-admin :: footer}"></div>
+	</div>
+</body>
+</html>

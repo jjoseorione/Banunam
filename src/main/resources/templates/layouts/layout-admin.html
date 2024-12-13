@@ -1,33 +1,71 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="https://www.thymeleaf.org" lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport"
+<head th:fragment="head">
+	<meta charset="utf-8">
+	<meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Spring Boot UNAM</title>
-<link rel="stylesheet" th:href="@{/css/style.css}">
+	<title>Banunam - User Administration</title>
+	<link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/styles/styles.css}" rel="stylesheet">
+	<script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+	<script type="text/javascript" th:src="@{/js/funciones.js}"></script>
 </head>
 <body>
 	<div th:fragment="navbar">
-		<nav class="navbar">
-			<h1 class="logo">Banunam - User Administration</h1>
-			<ul class="nav-links">
-				<li class="nav-item"><a href="/user-administration/">Home</a></li>
-<!--				<li sec:authorize="hasAuthority('EXEC')" class="nav-item"><a href="/user">User</a></li>-->
-<!--				<li sec:authorize="hasAuthority('ADMIN')" class="nav-item"><a href="/admin">Admin</a></li>-->
-				<li sec:authorize="!isAuthenticated()" class="nav-item"><a href="/user-administration/login">Login</a></li>
-				<li sec:authorize="isAuthenticated()" class="nav-item"><a href="/user-administration/onlyAuthorized">OnlyAuthorized</a></li>
-				<li sec:authorize="isAuthenticated()" class="nav-item">
+		<nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+			<div class="container-fluid">
+				<a class="navbar-brand tituloPagina" href="#">User Administration</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item dropdown mx-2">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								Filtro
+							</a>
+							<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item" th:href="@{/user-administration/?tipoUsuario={tipoUsuario}(tipoUsuario = ${tipo.alias}) }" th:each="tipo : ${listaTipos}" th:text="${tipo.descripcion}"></a></li>
+								<li><hr class="dropdown-divider"></li>
+								<li><a class="dropdown-item" th:href="@{/user-administration/}">Todos</a></li>
+							</ul>
+						</li>
+						<li class="nav-item mx-2">
+							<a class="nav-link" th:href="@{/user-administration/usuarios/agregar}">Agregar</a>
+						</li>
+					</ul>
+					<form class="d-flex" role="search" th:action="@{/user-administration/}" method="post">
+						<input class="form-control me-2" type="search" placeholder="XMX****/ZPT****" aria-label="Search" name="usuarioBusqueda">
+						<button class="btn btn-outline-success mr-5" type="submit">Buscar</button>
+					</form>
 					<form class="link" th:action="@{/user-administration/doLogout}" method="post">
-						<input class="link" type="submit" value="Logout"/>
-					</form></li>
-			</ul>
+						<input class="btn btn-danger mx-3" type="submit" value="Logout"/>
+					</form>
+				</div>
+			</div>
 		</nav>
+		<!-- ••••••••••••• NOTIFICACIONES ••••••••••••• -->
+		<div class="container-fluid mt-1">
+			<div th:if="${success!=null}" class="col-xl-12 alert alert-success alert-dismissible fade show" role="alert" id="success">
+				<span th:text="${success}"></span>
+				<button onclick="closeSuccess()" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			<div th:if="${danger!=null}" class="col-xl-12 alert alert-danger alert-dismissible fade show" role="alert" id="danger">
+				<span th:text="${danger}" ></span>
+				<ul th:if="${listaErrores!=null && listaErrores.size>0}">
+					<li th:each="error: ${listaErrores}" th:text="${error}"></li>
+				</ul>
+				<button onclick="closeDanger()" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		</div>
 	</div>
-	<div th:fragment="main-text"></div>
 	<div th:fragment="footer">
-		<p class="center">&#169; José Emmanuel Espino - Spring Security</p>
+		<div class="container">
+			<footer class="py-3 my-4 footer">
+				<p class="text-center text-muted">&copy; 2024 José Emmanuel Espino</p>
+			</footer>
+		</div>
 	</div>
 </body>
 </html>

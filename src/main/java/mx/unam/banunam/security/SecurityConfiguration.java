@@ -50,7 +50,7 @@ public class SecurityConfiguration {
             http
                     .securityMatcher("/user-administration/**")
                     .authorizeHttpRequests((authorize) -> authorize
-                            .requestMatchers("/css/**", "/favicon.ico", "/user-administration/", "/user-administration/token").permitAll()
+                            .requestMatchers("/css/**", "/favicon.ico", "/user-administration/token").permitAll()
                             .anyRequest().authenticated()
                     )
                     .formLogin(login -> login
@@ -89,7 +89,7 @@ public class SecurityConfiguration {
             http
                     .securityMatcher("/customer-care-center/**")
                     .authorizeHttpRequests((authorize) -> authorize
-                            .requestMatchers("/css/**", "/favicon.ico", "/customer-care-center/", "/customer-care-center/token").permitAll()
+                            .requestMatchers("/css/**", "/favicon.ico", "/customer-care-center/token").permitAll()
                             .anyRequest().authenticated()
                     )
                     .formLogin(login -> login
@@ -164,12 +164,12 @@ public class SecurityConfiguration {
 
     @Bean(name = "passwordEncoderUser")
     PasswordEncoder passwordEncoderUser() {
-        return new BCryptPasswordEncoder(11, new SecureRandom());
+        return new BCryptPasswordEncoder(15, new SecureRandom());
     }
 
     @Bean(name = "passwordEncoderCliente")
     PasswordEncoder passwordEncoderClient() {
-        return new BCryptPasswordEncoder(16, new SecureRandom());
+        return new BCryptPasswordEncoder(18, new SecureRandom());
     }
 
     @Bean(name = "usuarioAuthenticationProvider")

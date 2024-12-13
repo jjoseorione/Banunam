@@ -14,6 +14,7 @@ public class AppConfig {
     public ModelMapper modelMapper(){
         ModelMapper mm = new ModelMapper();
         mm.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        mm.getConfiguration().setSkipNullEnabled(false);
 
         //Cuando mapees de Usuario a UsuarioDTO, tomarás customer-care-center.getTipoUsuario().getAlias() para usuarioDto.setTipoUsuario()
         mm.typeMap(Usuario.class, UsuarioDTO.class).addMappings(mapper ->{

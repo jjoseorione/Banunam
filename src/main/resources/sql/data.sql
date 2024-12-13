@@ -230,7 +230,7 @@ INSERT INTO movimientos_prestamo VALUES( NULL, NOW(), 1752.75, 12, 30000003, '10
 INSERT INTO tipos_usuario VALUES(NULL, 'ADMIN', 'Administrador del Sistema');
 INSERT INTO tipos_usuario VALUES(NULL, 'EXEC', 'Ejecutivo Bancario');
 
-INSERT INTO usuarios VALUES(NULL, 'XMX7265', 'Juan Carlos', 'Medina', 'González', 'juancarlos.medina@banunam.com', '$2a$11$cahGZAyWLpWypsZ3gBTuieJd7mOf4Pv7i9jlU.x91jgH4qaHpap3m', 1, 0, 'A',
+INSERT INTO usuarios VALUES(NULL, 'XMX7265', 'Juan Carlos', 'Medina', 'González', 'juancarlos.medina@banunam.com', '$2a$15$xDwNnZzH54XVd38PAS10cewR/y5Bz8bQLvIdkGB88KRMLyTfJCOMW', 1, 0, 'A',
     DATE_ADD(NOW(), INTERVAL 6 MONTH), DATE_ADD(NOW(), INTERVAL 1 MONTH));
-INSERT INTO usuarios VALUES(NULL, 'ZPT0009', 'Roberto', 'Montoya', 'Payan', 'roberto.montoya@banunam.com', '$2a$11$cahGZAyWLpWypsZ3gBTuieJd7mOf4Pv7i9jlU.x91jgH4qaHpap3m', 2, 0, 'A',
+INSERT INTO usuarios VALUES(NULL, 'ZPT0009', 'Roberto', 'Montoya', 'Payan', 'roberto.montoya@banunam.com', '$2a$15$xDwNnZzH54XVd38PAS10cewR/y5Bz8bQLvIdkGB88KRMLyTfJCOMW', 2, 0, 'A',
     DATE_ADD(NOW(), INTERVAL 6 MONTH), DATE_ADD(NOW(), INTERVAL 1 MONTH));

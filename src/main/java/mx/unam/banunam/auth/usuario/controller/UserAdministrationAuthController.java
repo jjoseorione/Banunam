@@ -37,7 +37,7 @@ import java.util.List;
 @Controller
 @RequestMapping(path = "/user-administration/")
 @PreAuthorize("hasRole(${perfil.usuario.tipo1})")
-public class UserAdministrationController {
+public class UserAdministrationAuthController {
 	@Autowired
 	private UsuarioService usuarioService;
 	@Autowired
@@ -49,13 +49,6 @@ public class UserAdministrationController {
 	private PropiedadesPerfiles propiedadesPerfiles;
 
 
-	@GetMapping("/")
-	public String home(Model model) {
-
-		log.info("Entra a raíz");
-		model.addAttribute("text", "Hola");
-		return "/user-administration/home";
-	}
 
 	@GetMapping("/login")
 	public String login() {
@@ -88,7 +81,7 @@ public class UserAdministrationController {
 		log.info("LoginUserRequest {}", loginUserRequest);
 		log.info("########## Perfil requerido: {}", propiedadesPerfiles.getUsuarioTipo1());		//Perfil tipo2: ADMIN
 		try {
-			UsuarioDTO user = usuarioService.buscarUsuarioPorUsuario(loginUserRequest.getUsername());
+			UsuarioDTO user = usuarioService.buscarUsuarioPorUsuario(loginUserRequest.getUsername(), true);
 			//Filtro que verifica que el usuario sea del tipo requerido
 			log.info("########## JEEM: Filtro: estatus={} tipoUsuario={} fechaExpUsuario={}",
 					user.getEstatus(), user.getTipoUsuario(), user.getFechaExpUsuario());
@@ -104,7 +97,7 @@ public class UserAdministrationController {
 				Cookie cookie = new Cookie("token", jwtToken);
 				cookie.setMaxAge(Integer.MAX_VALUE);
 				res.addCookie(cookie);
-				session.setAttribute("msg", "Login OK!");
+				session.setAttribute("usuarioFirmado", user.getUsuario());
 			}
 			else{
 				log.info("########## JEEM: El usuario no es del perfil requerido");
@@ -119,7 +112,7 @@ public class UserAdministrationController {
 	}
 
 	private Authentication authenticate(String username, String password, String tipoUsuario) throws Exception {
-		log.info("########## JEEM: Se accede a UserAdministrationController.authenticate");
+		log.info("########## JEEM: Se accede a UserAdministrationAuthController.authenticate");
 		log.info("########## JEEM: Authentication Manager: {}", authenticationManager);
 		try {
 			List<GrantedAuthority> authorities = new ArrayList<>();
