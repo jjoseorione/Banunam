@@ -52,10 +52,10 @@ public class CuentaDebitoEntityTests {
         cuentaDebitoRepository.findAll().forEach(System.out::println);
     }
 
-    @DisplayName(value = "Crear cuenta de débito y asignarla a cliente")
+    @DisplayName(value = "Crear cuenta de débito y asignarla a clientes")
     @Test
     void createCuentaDebitoYAsignarACliente(){
-        System.out.println("Crear cuenta de débito y asignarla a cliente");
+        System.out.println("Crear cuenta de débito y asignarla a clientes");
         Optional<Cliente> cliente = clienteRepository.findById(NO_CLIENTE);
         if(cliente.isPresent()){
             System.out.println("Cliente: " + cliente.get());
@@ -75,10 +75,10 @@ public class CuentaDebitoEntityTests {
     }
 
     @Transactional
-    @DisplayName(value = "Buscar cliente por noCuenta debito")
+    @DisplayName(value = "Buscar clientes por noCuenta debito")
     @Test
     void findClienteByCuentaDebito(){
-        System.out.println("Buscar cliente por cuenta de debito " + NO_CUENTA);
+        System.out.println("Buscar clientes por cuenta de debito " + NO_CUENTA);
         Cliente cliente = cuentaDebitoRepository.findById(NO_CUENTA).get().getCliente();
         System.out.println(cliente);
     }

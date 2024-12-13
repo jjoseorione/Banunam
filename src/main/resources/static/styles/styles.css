@@ -1,96 +1,12 @@
-
-/*BOTÓN DE VOLVER*/
-/*.volver, .volver:visited{
-	background-color: dodgerblue;
-	border: solid 1px dodgerblue;
-	padding:1em;
-	text-decoration: none;
-	color: white;
-	font-weight: bold;
-}
-.volver:hover{
-	background-color: blue;
-	border: solid 1px blue;
-}
-.volver:active{
-	background-color: white;
-	border: solid 1px blue;
-	color: blue;
-}
-.tituloTabla{
-	font-size: 2em;
-	font-weight: bold;
-	text-align: center;
-	border-bottom: 2px solid dodgerblue;
-	font-family: serif;
-}*/
-/*
-.fondo{
-    background-color: #444;
-}
-.btn{
-    background-color: #2A6A9E;
-    color: white;
-}
-.btn:hover{
-    background-color: steelblue;
-    color: white;
-}
-.btn:active{
-    box-shadow: 0 0 0 4pt #B6D4E7 !important;
-}
-.barraNav{
-    margin: 0 2%;
-    background-color: #444;
-}
-.barraBoton{
-    text-align: center;
-    background-color: #444;
-    margin: 0;
-    padding: 0;
-}
-.barraBoton>a{
-    font-size: 1.5rem;
-    color: white;
-    display: block;
+a, a:hover, a:active, a:visited{
+    color: inherit;
     text-decoration: none;
-    background-color: #444;
-    padding: 0.4rem 0;
-    border: 2px solid #444;
-    cursor: default;
 }
-.barraBoton:hover .barraBoton-contenido{
-    display:block;
-}
-.barraBoton-contenido{
-    position: absolute;
-    display: none;
-    text-align: center;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    background-color: #656565;
-    margin: 0;
-    padding: 0;
-    z-index:99;
 
-}
-.barraBoton-contenido>a{
-    font-size: 1.2rem;
-    color: white;
-    display: block;
-    text-decoration: none;
-    background-color: #656565;
-    padding: 0.4rem 0;
-    border: 2px solid #656565;
-    cursor: default;
-}
-.barraBoton-contenido>a:hover{
-    background-color: #222;
-    border: 2px solid #222;
-}
-.tituloPagina>span{
-    border: 0.2rem double #2A6A9E;
-    background-color: #333;
-}*/
+
+/*--------------------------------------Footer----------------------------------------------------*/
+
+
 .b-example-divider {
     height: 3rem;
     background-color: rgba(0, 0, 0, .1);
@@ -104,7 +20,7 @@
     fill: currentColor;
 }
 
-/*-----------------------------------------------------------------------------------------------*/
+/*-------------------------User Administration----------------------------------------------------------------------*/
 
 .tituloLoginUA{
 	font-size: 2em;
@@ -119,8 +35,8 @@
     bottom: 0;
     width: 100%;
 }
-  
-.tituloPagina{
+
+.tituloPaginaUA{
     border: 0.2rem double #2A6A9E;
     font-size: 1.5rem;
     text-align: right;
@@ -129,4 +45,115 @@
     padding-right: 2vw;
     padding-left: 2vw;
     letter-spacing: 0.3rem;
+}
+
+/*--------------------CCC-------------*/
+
+.fondoNavCCC{
+    background-color: rgba(213, 159, 15, 1);
+}
+.btnCCC{
+    background-color: rgba(1, 59, 117, 1);
+    color: white;
+}
+.btnCCC:hover{
+    background-color: steelblue;
+    color: white;
+}
+.btnCCC:active{
+    box-shadow: 0 0 0 4pt #B6D4E7 !important;
+}
+
+.barraNav{
+    margin: 0 2%;
+    background-color: rgba(213, 159, 15, 1);
+}
+.barraBoton{
+    text-align: center;
+    background-color: rgba(213, 159, 15, 1);
+    margin: 0;
+    padding: 0;
+}
+.barraBoton>a{
+    color: white;
+    font-size: 1.5rem;
+    display: block;
+    text-decoration: none;
+    background-color: rgba(213, 159, 15, 1);
+    padding: 0.4rem 0;
+    border: 2px solid rgba(213, 159, 15, 1);
+    cursor: default;
+}
+.barraBoton:hover .barraBoton-contenido{
+    display:block;
+    color: white;
+}
+.barraBoton-contenido{
+    color: white;
+    position: absolute;
+    display: none;
+    text-align: center;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    background-color: rgb(173, 130, 11);
+    margin: 0;
+    padding: 0;
+    z-index:99;
+
+}
+.barraBoton-contenido>a{
+    color: white;
+    font-size: 1.2rem;
+    display: block;
+    text-decoration: none;
+    background-color: rgb(173, 130, 11);
+    padding: 0.4rem 0;
+    border: 2px solid rgb(173, 130, 11);
+    cursor: default;
+}
+.barraBoton-contenido>a:hover{
+    background-color: rgb(128, 95, 7);
+    border: 2px solid rgb(128, 95, 7);
+    color: white;
+}
+.tituloPaginaCCC{
+    font-size: 2.5rem;
+    text-align: left;
+    background-color: rgba(213, 159, 15, 1);
+    padding: 1rem;
+    padding-right: 2vw;
+    letter-spacing: 0.3rem;
+}
+.tituloPaginaCCC>span{
+    border: 0.4rem double rgba(1, 59, 117, 1);
+    background-color: rgba(213, 159, 15, 1);
+}
+
+
+.bodyLoginCCC {
+  background-image: url('../images/unam_biblioteca_central.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.bodyHomeCCC {
+    background-image: url('../images/unam_cu.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+
+.bg-oro{
+    background-color: rgba(213, 159, 15, 1);
+}
+
+.bg-oro-alpha{
+    background-color: rgba(213, 159, 15, 0.85);
+}
+
+.tituloFormCCC{
+	font-size: 2em;
+	font-weight: bold;
+	text-align: center;
+	border-bottom: 2px solid rgba(1, 59, 117, 1);
 }

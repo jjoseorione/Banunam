@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -42,5 +43,21 @@ public class ColoniaEntityTests {
         Optional<Colonia> colonia = coloniaRepository.findById(COLONIA);
         colonia.ifPresent(System.out::println);
         Assertions.assertEquals("Aguascalientes Centro", colonia.get().getNombre());
+    }
+
+    @DisplayName(value = "Buscar colonias por cp")
+    @Test
+    void findColoniasByCp(){
+        final String CP_1 = "20000";
+        final String CP_2 = "20010";
+        System.out.println("Buscar colonias por cp: " + CP_1);
+        List<Colonia> colonias = coloniaRepository.findByCp(CP_1);
+        Assertions.assertFalse(colonias.isEmpty());
+        System.out.println("Colonias: " + colonias);
+
+        System.out.println("Buscar colonias por cp: " + CP_2);
+        colonias = coloniaRepository.findByCp(CP_2);
+        Assertions.assertFalse(colonias.isEmpty());
+        System.out.println("Colonias: " + colonias);
     }
 }

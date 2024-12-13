@@ -51,17 +51,17 @@ public class DomicilioEntityTests {
     @Test
     @Transactional
     void findDomicilioById(){
-        System.out.println("Buscar estado por id: " + DOMICILIO);
+        System.out.println("Buscar domicilio por id: " + DOMICILIO);
         Optional<Domicilio> domicilio = domicilioRepository.findById(DOMICILIO);
         domicilio.ifPresent(System.out::println);
         Assertions.assertEquals("Pedro Parga", domicilio.get().getCalle());
     }
 
-    @DisplayName(value = "Crear domicilio y asignarlo a cliente")
+    @DisplayName(value = "Crear domicilio y asignarlo a clientes")
     @Test
     @Transactional
     void createDomicilio(){
-        System.out.println("Crear domicilio y asignarlo a cliente");
+        System.out.println("Crear domicilio y asignarlo a clientes");
         Optional<Cliente> cliente = clienteRepository.findById(CLIENTE);
         Optional<Colonia> colonia = coloniaRepository.findById(COLONIA);
         Assertions.assertTrue(cliente.isPresent());
@@ -77,5 +77,16 @@ public class DomicilioEntityTests {
                 .build();
         domicilioRepository.save(domicilio);
         System.out.println(domicilio);
+    }
+
+    @DisplayName(value = "Buscar domicilio por noCliente")
+    @Test
+    @Transactional
+    void findDomicilioByNoCliente(){
+        final int NO_CLIENTE = 4;
+        System.out.println("Buscar domicilio por noCliente: " + NO_CLIENTE);
+        Optional<Domicilio> domicilio = domicilioRepository.findByClienteNoCliente(NO_CLIENTE);
+        domicilio.ifPresent(System.out::println);
+        Assertions.assertEquals("Pedro Parga", domicilio.get().getCalle());
     }
 }

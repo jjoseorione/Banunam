@@ -1,24 +1,23 @@
-package mx.unam.banunam.system.model;
+package mx.unam.banunam.system.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Getter
-@Setter
-@Entity
-@Table(name = "clientes")
-public class Cliente {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ClienteDTO {
     private Integer noCliente;
     @NotBlank(message = "El nombre no puede quedar vacío")
     @Length(min = 1,max = 50, message = "El nombre no puede ser mayor a 50 caracteres")
@@ -49,52 +48,14 @@ public class Cliente {
     @Length(min=5, max=30, message="El número telefónico debe contener entre 5 y 30 posiciones")
     @Pattern(regexp = "^(\\+\\d{1,2}\\s?)?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$", message = "El formato de teléfono es incorrecto")
     private String telefono;
-    @OneToOne(mappedBy = "cliente", fetch = FetchType.LAZY)
-    private Domicilio domicilio;
-    @OneToOne(mappedBy = "cliente", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private CuentaDebito cuentaDebito;
-    @OneToOne(mappedBy = "cliente", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private CuentaCredito cuentaCredito;
-    @OneToOne(mappedBy = "cliente", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private CuentaPrestamo cuentaPrestamo;
-
-    @PrePersist
-    public void prePersist(){
-        if (apellido2 == null)
-            apellido2 = "";
-    }
-
-    public Cliente(Integer noCliente) {
-        this.noCliente = noCliente;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Cliente cliente)) return false;
-        return Objects.equals(noCliente, cliente.noCliente);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(noCliente);
-    }
-
-    @Override
-    public String toString() {
-        return "Cliente{" +
-                "noCliente=" + noCliente +
-                ", nombre='" + nombre + '\'' +
-                ", apPat='" + apellido1 + '\'' +
-                ", apMat='" + apellido2 + '\'' +
-                ", rfc='" + rfc + '\'' +
-                ", fechaNac=" + fechaNac +
-                ", correo='" + correo + '\'' +
-                ", contrasena='" + contrasena + '\'' +
-                ", telefono='" + telefono + '\'' +
-                '}';
-    }
+    @NotBlank(message = "La calle no puede quedar en blanco")
+    @Pattern(regexp = "^[A-zÀ-ú0-9]+(\\s?[A-zÀ-ú0-9]+)*$", message = "El nombre sólo puede contener caracteres alfabéticos y espacios entre palabras")
+    @Length(min = 1,max = 100, message = "La calle no puede ser mayor a 100 caracteres")
+    private String calle;
+    @Length(min = 1,max = 30, message = "Número interior no puede ser mayor a 30 caracteres")
+    private String numInterior;
+    @Length(min = 1,max = 30, message = "Número exterior no puede ser mayor a 30 caracteres")
+    private String numExterior;
+    private String colonia;
+    private Integer cuentaDebito;
 }

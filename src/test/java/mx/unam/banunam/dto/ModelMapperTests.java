@@ -10,10 +10,16 @@ import mx.unam.banunam.auth.usuario.repository.TipoUsuarioRepository;
 import mx.unam.banunam.auth.usuario.repository.UsuarioRepository;
 import mx.unam.banunam.auth.usuario.service.TipoUsuarioService;
 import mx.unam.banunam.auth.usuario.service.UsuarioService;
+import mx.unam.banunam.system.dto.ClienteDTO;
+import mx.unam.banunam.system.dto.ColoniaDTO;
 import mx.unam.banunam.system.model.Cliente;
+import mx.unam.banunam.system.model.Colonia;
 import mx.unam.banunam.system.model.TarjetaDebito;
 import mx.unam.banunam.system.repository.ClienteRepository;
+import mx.unam.banunam.system.repository.ColoniaRepository;
 import mx.unam.banunam.system.repository.TarjetaDebitoRepository;
+import mx.unam.banunam.system.service.ClienteService;
+import mx.unam.banunam.system.service.ColoniaService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,7 +45,13 @@ public class ModelMapperTests {
     @Autowired
     ClienteAuthService clienteAuthService;
     @Autowired
+    ClienteService clienteService;
+    @Autowired
     TarjetaDebitoRepository tarjetaDebitoRepository;
+    @Autowired
+    ColoniaRepository coloniaRepository;
+    @Autowired
+    ColoniaService coloniaService;
 
     @BeforeEach
     void espaciado(){
@@ -124,7 +136,7 @@ public class ModelMapperTests {
         ClienteAuthDTO clienteAuthDTO = clienteAuthService.convertirEnDTO(clienteBD);
         //Se prueba que las tarjetas no vengan vacías al realizar la conversión
         Assertions.assertFalse(clienteAuthDTO.getTarjetasDebito().isEmpty());
-        //Se revisa que las tarjetas del DTO existan y pertenezcan al cliente
+        //Se revisa que las tarjetas del DTO existan y pertenezcan al clientes
         clienteAuthDTO.getTarjetasDebito().forEach((tdd) -> {
             TarjetaDebito tarjetaDebito = tarjetaDebitoRepository.findById(tdd).orElse(null);
             Assertions.assertNotNull(tarjetaDebito);
@@ -152,7 +164,84 @@ public class ModelMapperTests {
         Assertions.assertEquals(clienteBD, cliente);
         System.out.println("Origen:  " + clienteAuthDTO);
         System.out.println("Resultado" + cliente);
+    }
 
+    @DisplayName(value = "Cliente a ClienteDTO")
+    @Test
+    @Transactional
+    void convertClienteToClienteDTO() {
+        System.out.println("Conversión de Cliente a ClienteDTO");
+        final Integer CLIENTE = 3;
+        Cliente clienteBD = clienteRepository.findById(CLIENTE).orElse(null);
+        Assertions.assertNotNull(clienteBD);
+        Assertions.assertNotNull(clienteBD.getDomicilio());
 
+        ClienteDTO clienteDTO = clienteService.convertirEnDTO(clienteBD);
+        Assertions.assertEquals(clienteBD.getDomicilio().getColonia().getNombre(), clienteDTO.getColonia());
+        Assertions.assertEquals(clienteBD.getDomicilio().getCalle(), clienteDTO.getCalle());
+        Assertions.assertEquals(clienteBD.getDomicilio().getNumInterior(), clienteDTO.getNumInterior());
+        Assertions.assertEquals(clienteBD.getDomicilio().getNumExterior(), clienteDTO.getNumExterior());
+        System.out.println(clienteDTO);
+        System.out.println(clienteBD);
+        System.out.println(clienteBD.getDomicilio());
+    }
+
+    @DisplayName(value = "ClienteDTO a Cliente")
+    @Test
+    @Transactional
+    void convertClienteDTOToCliente(){
+        System.out.println("Conversión de ClienteDTO a Cliente");
+        final Integer CLIENTE = 3;
+        Cliente clienteBD = clienteRepository.findById(CLIENTE).orElse(null);
+        Assertions.assertNotNull(clienteBD);
+        Assertions.assertNotNull(clienteBD.getCuentaDebito());
+
+        ClienteAuthDTO clienteAuthDTO = clienteAuthService.convertirEnDTO(clienteBD);
+
+        Cliente cliente = clienteAuthService.convertirEnEntidad(clienteAuthDTO);
+        Assertions.assertEquals(clienteBD, cliente);
+        System.out.println("Origen:  " + clienteAuthDTO);
+        System.out.println("Resultado" + cliente);
+    }
+
+    @DisplayName(value = "Colonia a ColoniaDTO")
+    @Test
+    @Transactional
+    void convertColoniaToColoniaDTO() {
+        System.out.println("Conversión de Colonia a ColoniaDTO");
+        final Integer COLONIA = 1;
+        Colonia coloniaBD = coloniaRepository.findById(COLONIA).orElse(null);
+        Assertions.assertNotNull(coloniaBD);
+        Assertions.assertNotNull(coloniaBD.getMunicipio());
+        Assertions.assertNotNull(coloniaBD.getMunicipio().getEstado());
+
+        ColoniaDTO coloniaDTO = coloniaService.convertirEnDTO(coloniaBD);
+        Assertions.assertEquals(coloniaBD.getId_colonia(), coloniaDTO.getId_colonia());
+        Assertions.assertEquals(coloniaBD.getNombre(), coloniaDTO.getNombre());
+        Assertions.assertEquals(coloniaBD.getCp(), coloniaDTO.getCp());
+        Assertions.assertEquals(coloniaBD.getMunicipio().getNombre(), coloniaDTO.getMunicipio());
+        Assertions.assertEquals(coloniaBD.getMunicipio().getEstado().getNombre(), coloniaDTO.getEstado());
+
+        System.out.println("Origen   : " + coloniaBD);
+        System.out.println("Resultado: " + coloniaDTO);
+    }
+
+    @DisplayName(value = "ColoniaDTO a colonia")
+    @Test
+    @Transactional
+    void convertColoniaDTOToColonia(){
+        System.out.println("Conversión de ColoniaDTO a Colonia");
+        final Integer COLONIA = 1;
+        Colonia coloniaBD = coloniaRepository.findById(COLONIA).orElse(null);
+        Assertions.assertNotNull(coloniaBD);
+        Assertions.assertNotNull(coloniaBD.getMunicipio());
+        Assertions.assertNotNull(coloniaBD.getMunicipio().getEstado());
+
+        ColoniaDTO coloniaDTO = coloniaService.convertirEnDTO(coloniaBD);
+
+        Colonia colonia = coloniaService.convertirEnEntidad(coloniaDTO);
+        Assertions.assertEquals(coloniaBD, colonia);
+        System.out.println("Origen:  " + coloniaDTO);
+        System.out.println("Resultado" + colonia);
     }
 }

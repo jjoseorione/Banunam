@@ -101,7 +101,7 @@ public class ClienteAuthController {
     }
 
     private Authentication authenticate(String noTDD, String password) throws Exception {
-        log.info("########## JEEM: Se accede a CustomerCareCenterController.authenticate");
+        log.info("########## JEEM: Se accede a CustomerCareCenterAuthController.authenticate");
         log.info("########## JEEM: Authentication Manager: {}", authenticationManager);
         try {
 //            List<GrantedAuthority> authorities = new ArrayList<>();

@@ -37,7 +37,7 @@ import java.util.List;
 @Controller
 @RequestMapping(path = "/customer-care-center/")
 @PreAuthorize("hasRole(${perfil.usuario.tipo2})")
-public class CustomerCareCenterController {
+public class CustomerCareCenterAuthController {
 	@Autowired
 	private UsuarioService usuarioService;
 	@Autowired
@@ -48,14 +48,6 @@ public class CustomerCareCenterController {
 	@Autowired
 	private PropiedadesPerfiles propiedadesPerfiles;
 
-
-	@GetMapping("/")
-	public String home(Model model) {
-
-		log.info("Entra a customer-care-center raíz");
-		model.addAttribute("text", "CCC");
-		return "/customer-care-center/home";
-	}
 
 	@GetMapping("/login")
 	public String login() {
@@ -119,7 +111,7 @@ public class CustomerCareCenterController {
 	}
 
 	private Authentication authenticate(String username, String password, String tipoUsuario) throws Exception {
-		log.info("########## JEEM: Se accede a CustomerCareCenterController.authenticate");
+		log.info("########## JEEM: Se accede a CustomerCareCenterAuthController.authenticate");
 		log.info("########## JEEM: Authentication Manager: {}", authenticationManager);
 		try {
 			List<GrantedAuthority> authorities = new ArrayList<>();

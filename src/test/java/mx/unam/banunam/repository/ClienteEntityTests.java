@@ -45,30 +45,30 @@ public class ClienteEntityTests{
         clienteRepository.findAll().forEach(System.out::println);
     }
 
-    @DisplayName(value = "Buscar una cliente por noCliente")
+    @DisplayName(value = "Buscar una clientes por noCliente")
     @Test
     void findClienteByNoClienteTest(){
-        System.out.println("Buscar cliente por noCliente " + NO_CLIENTE);
+        System.out.println("Buscar clientes por noCliente " + NO_CLIENTE);
         Optional<Cliente> optional = clienteRepository.findById(NO_CLIENTE);
         optional.ifPresent(System.out::println);
     }
 
-    @DisplayName(value = "Crear nuevo cliente")
+    @DisplayName(value = "Crear nuevo clientes")
     @Test
     void createCliente(){
-        System.out.println("Crear nuevo cliente");
-//        Cliente cliente = new Cliente(null, "Pedro", "Solano", "Ruíz", "PSR871205", LocalDate.of(1987, 12, 5),
+        System.out.println("Crear nuevo clientes");
+//        Cliente clientes = new Cliente(null, "Pedro", "Solano", "Ruíz", "PSR871205", LocalDate.of(1987, 12, 5),
 //                "pedro.solano@gmail.com", "t3mp0r4l", "5548781205", null, null);
         Cliente cliente = Cliente.builder().noCliente(null).nombre("Pedro").apellido1("Solano").apellido2("Ruiz").rfc("PSRE871205123").fechaNac(LocalDate.of(1987, 12, 5))
                 .correo("pedro.solano@gmail.com").contrasena("t3mp0r4l").telefono("5548781205").cuentaDebito(null).cuentaDebito(null).cuentaPrestamo(null).build();
         clienteRepository.save(cliente);
-        System.out.println("El nuevo cliente es: " + cliente);
+        System.out.println("El nuevo clientes es: " + cliente);
     }
 
     @DisplayName(value = "Encontrar por num TDD")
     @Test
     void findClienteByNoTDD(){
-        System.out.println("Encontrar cliente por num TDD");
+        System.out.println("Encontrar clientes por num TDD");
         final String NO_TARJETA = "1709632515478587";
         final Integer NO_CLIENTE_ESPERADO = 3;
         Cliente cliente = clienteRepository.findByNoTarjetaDebito(NO_TARJETA).orElse(null);

@@ -42,7 +42,7 @@ public class Domicilio {
                 ", numInterior='" + numInterior + '\'' +
                 ", numExterior='" + numExterior + '\'' +
                 ", colonia=" + colonia +
-                ",\n\tcliente=" + cliente +
+                ",\n\tclientes=" + cliente +
                 '}';
     }
 }

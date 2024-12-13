@@ -1,33 +1,82 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="https://www.thymeleaf.org" lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Spring Boot UNAM</title>
-<link rel="stylesheet" th:href="@{/css/style.css}">
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="es">
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banunam - Customer Care Center</title>
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/styles/styles.css}" rel="stylesheet">
+    <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
+    <script type="text/javascript" th:src="@{/js/funciones.js}"></script>
 </head>
 <body>
-	<div th:fragment="navbar">
-		<nav class="navbar">
-			<h1 class="logo">Banunam - Customer Care Center</h1>
-			<ul class="nav-links">
-				<li class="nav-item"><a href="/customer-care-center/">Home</a></li>
-<!--				<li sec:authorize="hasAuthority('EXEC')" class="nav-item"><a href="/user">User</a></li>-->
-<!--				<li sec:authorize="hasAuthority('ADMIN')" class="nav-item"><a href="/admin">Admin</a></li>-->
-				<li sec:authorize="!isAuthenticated()" class="nav-item"><a href="/customer-care-center/login">Login</a></li>
-				<li sec:authorize="isAuthenticated()" class="nav-item"><a href="/customer-care-center/onlyAuthorized">Only Authorized</a></li>
-				<li sec:authorize="isAuthenticated()" class="nav-item">
-					<form class="link" th:action="@{/customer-care-center/doLogout}" method="post">
-						<input class="link" type="submit" value="Logout"/>
-					</form></li>
-			</ul>
-		</nav>
-	</div>
-	<div th:fragment="main-text"></div>
-	<div th:fragment="footer">
-		<p class="center">&#169; José Emmanuel Espino - Spring Security</p>
-	</div>
+<header th:fragment="header">
+    <div>
+        <a th:href="@{/customer-care-center/}"><h2 class="tituloPaginaCCC mb-1"><span>Banunam - Customer Care Center</span></h2></a>
+    </div>
+    <!-- ••••••••••••• BARRA DE NAVEGACIÓN ••••••••••••• -->
+    <div class="container-fluid fondoNavCCC">
+        <div class="row barraNav">
+            <div class="col-md-2 barraBoton">
+                <a href="#">Clientes</a>
+                <div class="col-md-2 barraBoton-contenido">
+                    <a href="#">Aprobación</a>
+                    <a th:href="@{/customer-care-center/clientes/agregar}">Agregar Cliente</a>
+                    <a th:href="@{/customer-care-center/clientes/buscar}">Buscar Cliente</a>
+                </div>
+            </div>
+            <div class="col-md-3 barraBoton"  id="menuCuentasDebito">
+                <a href="#">Cuentas de Débito</a>
+                <div class="col-md-4 barraBoton-contenido">
+                    <a href="#">Buscar Cuenta de Débito</a>
+                    <a href="#">Crear Cuenta de Débito</a>
+                    <a href="#">Realizar Depósito</a>
+                    <a href="#">Realizar Retiro</a>
+                    <a href="#">Solicitar Tarjeta</a>
+                    <a href="#">Ver Movimientos</a>
+                </div>
+            </div>
+            <div class="col-md-3 barraBoton" id="menuCuentasCredito">
+                <a href="#">Cuentas de Crédito</a>
+                <div class="col-md-4 barraBoton-contenido">
+                    <a href="#">Buscar Cuenta de Crédito</a>
+                    <a href="#">Crear Cuenta de Crédito</a>
+                    <a href="#">Realizar Depósito</a>
+                    <a href="#">Realizar Retiro</a>
+                    <a href="#">Solicitar Tarjeta</a>
+                    <a href="#">Ver Movimientos</a>
+                </div>
+            </div>
+            <div class="col-md-2 barraBoton"  id="menuCuentasPrestamos">
+                <a href="#">Préstamos</a>
+                <div class="col-md-2 barraBoton-contenido">
+                    <a href="#">Solicitar Préstamo</a>
+                    <a href="#">Pagar Recibo a Préstamo</a>
+                </div>
+            </div>
+            <div class="col-md-2 barraBoton" id="logout">
+                <form id="logoutForm" th:hidden="true" method="post" th:action="@{/doLogout}">
+                    <input type="submit" value="Logout"/>
+                </form>
+                <a href="javascript: document.getElementById('logoutForm').submit();">Cerrar sesión</a>
+            </div>
+        </div>
+    </div>
+    <!-- ••••••••••••• NOTIFICACIONES ••••••••••••• -->
+    <div class="container-fluid mt-1">
+        <div th:if="${success!=null}" class="col-xl-12 alert alert-success alert-dismissible fade show" role="alert" id="success">
+            <span th:text="${success}"></span>
+            <button onclick="closeSuccess()" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${danger!=null}" class="col-xl-12 alert alert-danger alert-dismissible fade show bg-danger text-white" role="alert" id="danger">
+            <span th:text="${danger}" ></span>
+            <ul th:if="${listaErrores!=null && listaErrores.size>0}">
+                <li th:each="error: ${listaErrores}" th:text="${error}"></li>
+            </ul>
+            <button onclick="closeDanger()" type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</header>
 </body>
 </html>
