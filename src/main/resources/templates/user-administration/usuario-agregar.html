@@ -42,7 +42,7 @@
 									<tr>
 										<th><label for="estatus" class="form-label">Estatus: </label></th>
 										<td>
-											<select class="form-control" th:field="*{estatus}" id="estatus" required>
+											<select class="form-control" th:field="*{estatus}" id="estatus" th:required="true">
 												<option th:value="A" th:text="Activo"/>
 												<option th:value="B" th:text="Bloqueado"/>
 											</select>
@@ -51,8 +51,8 @@
 									<tr>
 										<th><label for="usuario" class="form-label">Perfil de usuario: </label></th>
 										<td>
-											<select class="form-control" th:field="*{tipoUsuario}" id="tipoUsuario"  required>
-												<option value="" th:disabled="disabled" th:selected="selected">
+											<select class="form-control" th:field="*{tipoUsuario}" id="tipoUsuario"  th:required="true">
+												<option value="">
 													Elije una opción...
 												</option>
 												<option th:each="tipo : ${listaTipos}" th:value="${tipo.alias}" th:text="${tipo.descripcion}"/>

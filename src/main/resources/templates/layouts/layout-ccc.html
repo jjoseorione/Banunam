@@ -21,7 +21,6 @@
             <div class="col-md-2 barraBoton">
                 <a href="#">Clientes</a>
                 <div class="col-md-2 barraBoton-contenido">
-                    <a href="#">Aprobación</a>
                     <a th:href="@{/customer-care-center/clientes/agregar}">Agregar Cliente</a>
                     <a th:href="@{/customer-care-center/clientes/buscar}">Buscar Cliente</a>
                 </div>
@@ -29,12 +28,12 @@
             <div class="col-md-3 barraBoton"  id="menuCuentasDebito">
                 <a href="#">Cuentas de Débito</a>
                 <div class="col-md-4 barraBoton-contenido">
-                    <a href="#">Buscar Cuenta de Débito</a>
-                    <a href="#">Crear Cuenta de Débito</a>
-                    <a href="#">Realizar Depósito</a>
-                    <a href="#">Realizar Retiro</a>
-                    <a href="#">Solicitar Tarjeta</a>
-                    <a href="#">Ver Movimientos</a>
+                    <a th:href="@{/customer-care-center/cuentas-debito/buscar}">Buscar Cuenta de Débito</a>
+                    <a th:href="@{/customer-care-center/cuentas-debito/crear}">Crear Cuenta de Débito</a>
+                    <a th:href="@{/customer-care-center/cuentas-debito/deposito}">Realizar Depósito</a>
+                    <a th:href="@{/customer-care-center/cuentas-debito/retiro}">Realizar Retiro</a>
+                    <a th:href="@{/customer-care-center/cuentas-debito/agregar}">Solicitar Tarjeta</a>
+                    <a th:href="@{/customer-care-center/cuentas-debito/moviemintos}">Ver Movimientos</a>
                 </div>
             </div>
             <div class="col-md-3 barraBoton" id="menuCuentasCredito">
