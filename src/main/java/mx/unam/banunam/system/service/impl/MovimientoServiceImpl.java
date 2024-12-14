@@ -50,4 +50,29 @@ public class MovimientoServiceImpl implements MovimientoService {
         cuentaDebito.setSaldo(cuentaDebito.getSaldo().add(mov.getMonto()));
         return mov;
     }
+
+    @Override
+    @Transactional
+    public MovimientoDebito realizarRetiro(BigDecimal monto, Integer noCuentaDebito, String origenDestino, String concepto) {
+        TipoMovimiento tipoMovimiento = tipoMovimientoRepository.findById(6).orElse(null);
+        CuentaDebito cuentaDebito = cuentaDebitoRepository.findById(noCuentaDebito).orElse(null);
+        OrigenDestinoMovimiento origenDestinoMovimiento = origenDestinoMovimientoRepository.findById(7).orElse(null);
+
+        if(tipoMovimiento == null || cuentaDebito == null || origenDestinoMovimiento == null)
+            return null;
+
+        MovimientoDebito mov = MovimientoDebito.builder()
+                .folio(null)
+                .timestampMov(null)
+                .monto(monto)
+                .tipoMov(tipoMovimiento)
+                .cuentaDebito(cuentaDebito)
+                .origenDestino(origenDestino)
+                .tipoOrigenDestino(origenDestinoMovimiento)
+                .concepto("Retiro en sucursal " + cuentaDebito.getCliente().getDomicilio().getColonia().getNombre())
+                .build();
+        movimientoDebitoRepository.save(mov);
+        cuentaDebito.setSaldo(cuentaDebito.getSaldo().subtract(mov.getMonto()));
+        return mov;
+    }
 }

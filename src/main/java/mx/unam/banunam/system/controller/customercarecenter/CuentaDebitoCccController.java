@@ -97,11 +97,6 @@ public class CuentaDebitoCccController {
     }
 
 
-
-
-
-
-
     @GetMapping("/deposito")
     public String deposito(Model model){
         model.addAttribute("cuentaDebito", new CuentaDebito());
@@ -150,5 +145,74 @@ public class CuentaDebitoCccController {
         String successMsg = "Se realizó el depósito por " + movimientoDebito.getMonto() + " a la cuenta " + noCuenta;
         flash.addFlashAttribute("success", successMsg);
         return "redirect:" + URI_BASE + "deposito";
+    }
+
+    @GetMapping("/retiro")
+    public String retiro(Model model){
+        model.addAttribute("cuentaDebito", new CuentaDebito());
+        return URI_BASE + "cuenta-debito-retiro";
+    }
+
+    @PostMapping("/retiro")
+    public String retiro(@Valid @ModelAttribute("cuentaDebito") CuentaDebito cuentaDebito, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("danger", "Error en la entrada de datos.");
+            return URI_BASE + "cuenta-debito-buscar";
+        }
+        log.info("########## JEEM: Número a buscar: {}", cuentaDebito.getNoCuenta());
+        CuentaDebito cuentaDebitoBD = cuentaDebitoService.buscarCuentaDebitoPorNoCuenta(cuentaDebito.getNoCuenta());
+        log.info("########## JEEM: Cuenta encontrada: {}", cuentaDebitoBD);
+        model.addAttribute("cuentaDebitoBD", cuentaDebitoBD);
+        model.addAttribute("retiro", new MovimientoDebito());
+        return URI_BASE + "cuenta-debito-retiro";
+    }
+
+    @PostMapping("/confirmarRetiro")
+    public String confirmarRetiro(@Valid @ModelAttribute("movimientoDebito") MovimientoDebito movimientoDebito, BindingResult result,
+                                    Integer noCuenta, Model model, HttpSession session, RedirectAttributes flash){
+        log.info("########## JEEM: Información recibida:");
+        log.info("########## JEEM: {}", movimientoDebito);
+        log.info("########## JEEM: {}", noCuenta);
+        List<String> listaErrores = new ArrayList<>();
+        String errorMsg = "";
+        if(result.hasErrors()){
+            for(ObjectError e: result.getAllErrors()){
+                if(e.getDefaultMessage().contains("monto"))
+                    errorMsg = "Error en la entrada de datos. El monto debe estar ser un número positivo con dos decimales";
+            }
+        }
+        if(!Objects.equals(errorMsg, "")){
+            flash.addFlashAttribute("danger", errorMsg);
+            return "redirect:" + URI_BASE + "retiro";
+        }
+
+        MovimientoDebito movimientoCreado = movimientoService.realizarRetiro(movimientoDebito.getMonto(), noCuenta, (String) session.getAttribute("usuarioFirmado"), "Retiro en sucursal");
+        if(movimientoCreado == null){
+            errorMsg = "Error al realizar el retiro";
+            flash.addFlashAttribute("danger", errorMsg);
+            return "redirect:" + URI_BASE + "retiro";
+        }
+        String successMsg = "Se realizó el retiro por " + movimientoDebito.getMonto() + " a la cuenta " + noCuenta;
+        flash.addFlashAttribute("success", successMsg);
+        return "redirect:" + URI_BASE + "retiro";
+    }
+
+    @GetMapping("/movimientos")
+    public String verMovimientos(Model model){
+        model.addAttribute("cuentaDebito", new CuentaDebito());
+        return URI_BASE + "movimientos-buscar";
+    }
+
+    @PostMapping("/movimientos")
+    public String verMovimientos(@Valid @ModelAttribute("cuentaDebito") CuentaDebito cuentaDebito, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("danger", "Error en la entrada de datos. ");
+            return URI_BASE + "movimientos-buscar";
+        }
+        System.out.println(cuentaDebito.getNoCuenta());
+        List<MovimientoDebito> listaMovimientos = cuentaDebitoService.buscarMovimientosPorNoCuenta(cuentaDebito.getNoCuenta());
+        System.out.println(listaMovimientos);
+        model.addAttribute("listaMovimientos", listaMovimientos);
+        return URI_BASE + "movimientos-buscar";
     }
 }
