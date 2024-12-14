@@ -151,6 +151,10 @@ a, a:hover, a:active, a:visited{
     background-color: rgba(213, 159, 15, 0.85);
 }
 
+.bg-clear{
+    background-color: rgba(54, 54, 54, 0.7);
+}
+
 .tituloFormCCC{
 	font-size: 2em;
 	font-weight: bold;

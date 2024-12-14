@@ -96,7 +96,7 @@ public class CustomerCareCenterAuthController {
 				Cookie cookie = new Cookie("token", jwtToken);
 				cookie.setMaxAge(Integer.MAX_VALUE);
 				res.addCookie(cookie);
-				session.setAttribute("msg", "Login OK!");
+				session.setAttribute("usuarioFirmado", user.getUsuario());
 			}
 			else{
 				log.info("########## JEEM: El usuario no es del perfil requerido");
