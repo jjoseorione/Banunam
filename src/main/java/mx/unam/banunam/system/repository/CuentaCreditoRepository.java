@@ -7,5 +7,4 @@ import java.util.Optional;
 
 public interface CuentaCreditoRepository extends JpaRepository<CuentaCredito, Integer> {
     Optional<CuentaCredito> findByClienteNoCliente(Integer noCliente);
-    //List<CuentaCredito> findByLimCreditoGreaterThan(Double limCredito);
 }

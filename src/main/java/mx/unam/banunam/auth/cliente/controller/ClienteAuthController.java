@@ -45,12 +45,12 @@ public class ClienteAuthController {
     public String home(Model model){
         log.info("########## JEEM: Entra a banca-en-linea raíz");
         model.addAttribute("text", "BeL");
-        return "/banca-en-linea/home";
+        return "/banca-en-linea/banca-home";
     }
 
     @GetMapping("/login")
     public String login() {
-        return "/banca-en-linea/login";
+        return "/banca-en-linea/banca-login";
     }
 
     @PostMapping("/login_success_handler")
@@ -62,7 +62,7 @@ public class ClienteAuthController {
     @PostMapping("/login_failure_handler")
     public String loginFailureHandler() {
         log.info("Login failure handler....");
-        return "/banca-en-linea/login";
+        return "/banca-en-linea/banca-login";
     }
 
     @GetMapping("/onlyAuthorized")
@@ -91,7 +91,8 @@ public class ClienteAuthController {
                 Cookie cookie = new Cookie("tokenCliente", jwtToken);
                 cookie.setMaxAge(Integer.MAX_VALUE);
                 res.addCookie(cookie);
-                session.setAttribute("msg", "Login OK!");
+                session.setAttribute("nombreCliente", cliente.getNombre());
+                session.setAttribute("noCliente", cliente.getNoCliente());
 
         } catch (ClienteNotFoundException | BadCredentialsException | DisabledException e) {
             flash.addFlashAttribute("loginError", true);

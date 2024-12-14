@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="es">
+<head th:replace="~{/layouts/layout-banca :: head}"></head>
+<body class="bodyRoot">
+<header th:replace="~{/layouts/layout-banca :: header}"></header>
+
+<div class="container py-3 mt-5 bg-alpha">
+    <div class="position-relative overflow-hidden  m-md-3 text-center bg-alpha">
+        <div class="col-md-5 mx-auto my-5">
+            <h2 class=" fw-normal">Mis cuentas</h2>
+        </div>
+        <div class="product-device shadow-sm d-none d-md-block"></div>
+        <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+    </div>
+    <div class="row">
+        <div th:if="${noCuentaDebito}" class="col-sm-4">
+            <div class="card bg-alpha">
+                <div class="card-body">
+                    <h4 class="card-title">Cuenta de Débito</h4>
+                    <p class="card-text">&nbsp;</p>
+                    <h5 class="card-title" th:text="${noCuentaDebito}"></h5>
+                    <h6 class="card-text" th:text="'Saldo ' + ${saldoCuentaDebito}"></h6>
+                    <p class="card-text">&nbsp;</p>
+                    <a href="/banca-en-linea/movimientos-debito" class="btn btn-dark">Movimientos</a>
+                    <a href="/banca-en-linea/cuenta-debito" class="btn btn-dark">Detalle</a>
+                </div>
+            </div>
+        </div>
+        <div th:if="${noCuentaCredito}" class="col-sm-4">
+            <div class="card bg-alpha">
+                <div class="card-body">
+                    <h4 class="card-title">Cuenta de Crédito</h4>
+                    <p class="card-text">&nbsp;</p>
+                    <h5 class="card-title" th:text="${noCuentaCredito}"></h5>
+                    <h6 class="card-text" th:text="'Saldo: ' + ${saldoCuentaCredito}"></h6>
+                    <p class="card-text" th:text="'Límite de crédito: ' + ${limCredito}"></p>
+                    <a href="/banca-en-linea/movimientos-debito" class="btn btn-dark">Movimientos</a>
+                    <a href="/banca-en-linea/cuenta-debito" class="btn btn-dark">Detalle</a>
+                </div>
+            </div>
+        </div>
+        <div th:if="${noCuentaPrestamo}" class="col-sm-4">
+            <div class="card bg-alpha">
+                <div class="card-body">
+                    <h4 class="card-title">Préstamo</h4>
+                    <p class="card-text">&nbsp;</p>
+                    <h5 class="card-title" th:text="${noCuentaPrestamo}"></h5>
+                    <h6 class="card-text" th:text="'Saldo: ' + ${saldoCuentaPrestamo}"></h6>
+                    <p class="card-text" th:text="'Monto amortizado: ' + ${montoAmortizado}"></p>
+                    <a href="/banca-en-linea/movimientos-debito" class="btn btn-dark">Movimientos</a>
+                    <a href="/banca-en-linea/cuenta-debito" class="btn btn-dark">Detalle</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{layouts/layout-banca :: footer}"></div>
+</div>
+</body>
+</html>

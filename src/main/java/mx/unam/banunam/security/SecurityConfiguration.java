@@ -129,7 +129,7 @@ public class SecurityConfiguration {
             http
                     .securityMatcher("/banca-en-linea/**")
                     .authorizeHttpRequests((authorize) -> authorize
-                            .requestMatchers("/css/**", "/favicon.ico", "/banca-en-linea/", "/banca-en-linea/token").permitAll()
+                            .requestMatchers("/css/**", "/favicon.ico", "/banca-en-linea/token").permitAll()
                             .anyRequest().authenticated()
                     )
                     .formLogin(login -> login
@@ -139,7 +139,7 @@ public class SecurityConfiguration {
                             .permitAll())
                     .logout(logout -> logout
                             .logoutUrl("/banca-en-linea/doLogout")
-                            .logoutSuccessUrl("/index")
+                            .logoutSuccessUrl("/")
                             .deleteCookies("JSESSIONID") //NEW Cookies to clear
                             .logoutSuccessHandler(customLogoutSuccessHandler)
                             .clearAuthentication(true)

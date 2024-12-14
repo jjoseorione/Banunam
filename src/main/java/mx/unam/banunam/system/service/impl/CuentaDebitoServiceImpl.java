@@ -37,4 +37,9 @@ public class CuentaDebitoServiceImpl implements CuentaDebitoService {
     public CuentaDebito crearCuentaDebito(CuentaDebito cuentaDebito) {
         return cuentaDebitoRepository.save(cuentaDebito);
     }
+
+    @Override
+    public CuentaDebito buscarCuentaDebitoPorNoCliente(Integer id) {
+        return cuentaDebitoRepository.findByClienteNoCliente(id).orElse(null);
+    }
 }

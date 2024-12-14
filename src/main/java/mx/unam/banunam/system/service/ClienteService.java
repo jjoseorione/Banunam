@@ -14,5 +14,5 @@ public interface ClienteService {
     ClienteDTO salvar(Cliente cliente, Boolean update);
     Domicilio salvarDomicilio(Domicilio domicilio);
     Domicilio salvarDomicilio(ClienteDTO clienteDTO, Integer idColonia);
-    List<Cliente> listarClientes();
+    List<ClienteDTO> listarClientesSinCuentaDebito();
 }

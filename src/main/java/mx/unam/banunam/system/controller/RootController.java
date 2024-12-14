@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RootController {
     @GetMapping("/")
     public String raiz() {
-        log.info("########## JEEM: RootController: Entra a raíz. Se redirecciona a /banca-en-linea/");
-        return "redirect:/banca-en-linea/";
+        log.info("########## JEEM: RootController: Entra a raíz. Se muestra una página de presentación");
+        return "home";
     }
 }

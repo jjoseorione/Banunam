@@ -10,4 +10,6 @@ public interface CuentaDebitoService {
     CuentaDebito buscarCuentaDebitoPorNoCuenta(Integer id);
     List<MovimientoDebito> buscarMovimientosPorNoCuenta(Integer id);
     CuentaDebito crearCuentaDebito(CuentaDebito cuentaDebito);
+
+    CuentaDebito buscarCuentaDebitoPorNoCliente(Integer id);
 }

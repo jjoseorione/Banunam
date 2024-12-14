@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -86,9 +87,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public List<Cliente> listarClientes() {
-        return (List<Cliente>) clienteRepository.findAll();
+    public List<ClienteDTO> listarClientesSinCuentaDebito() {
+        return clienteRepository.findWhereCuentaDebitoIsNull().stream().map(this::convertirEnDTO).collect(Collectors.toList());
     }
-
-
 }

@@ -3,8 +3,10 @@ package mx.unam.banunam.system.controller.customercarecenter;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import mx.unam.banunam.system.dto.ClienteDTO;
 import mx.unam.banunam.system.model.CuentaDebito;
 import mx.unam.banunam.system.model.MovimientoDebito;
+import mx.unam.banunam.system.service.ClienteService;
 import mx.unam.banunam.system.service.CuentaDebitoService;
 import mx.unam.banunam.system.service.MovimientoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,8 @@ public class CuentaDebitoCccController {
     private CuentaDebitoService cuentaDebitoService;
     @Autowired
     private MovimientoService movimientoService;
+    @Autowired
+    private ClienteService clienteService;
 
     private final String URI_BASE = "/customer-care-center/cuentas-debito/";
 
@@ -54,6 +58,49 @@ public class CuentaDebitoCccController {
         model.addAttribute("cuentaDebitoBD", cuentaDebitoBD);
         return URI_BASE + "cuenta-debito-buscar";
     }
+
+    @GetMapping("/crear")
+    public String crearCuentaDebito(Model model, CuentaDebito cuentaDebito){
+        List<ClienteDTO> listaClientes = clienteService.listarClientesSinCuentaDebito();
+        if(cuentaDebito == null)
+            cuentaDebito = new CuentaDebito();
+        if(listaClientes.isEmpty())
+            model.addAttribute("danger", "Todos los clientes tienen ya una cuenta de débito");
+        else
+            model.addAttribute("listaClientes", listaClientes);
+        model.addAttribute("cuentaDebito", cuentaDebito);
+        return URI_BASE + "cuenta-debito-agregar";
+    }
+
+    @PostMapping("/crear")
+    public String validaCuenta(@Valid @ModelAttribute("cuentaDebito") CuentaDebito cuentaDebito, BindingResult result,
+                                    Model model, RedirectAttributes flash){
+        String errorMsg = "Error en la entrada de datos. Valide lo siguiente: ";
+        List<String> listaErrores = new ArrayList<>();
+        log.info("########## JEEM: Cuenta recibida: {}", cuentaDebito);
+        if(result.hasErrors()){
+            for(ObjectError e: result.getAllErrors()){
+                listaErrores.add(e.getDefaultMessage());
+                log.info("########## JEEM: Lista de errores: {}",listaErrores);
+            }
+
+            flash.addFlashAttribute("danger", errorMsg);
+            flash.addFlashAttribute("listaErrores", listaErrores);
+            flash.addFlashAttribute("cuentaDebito", cuentaDebito);
+            return "redirect:" + URI_BASE + "agregar";
+        }
+
+        CuentaDebito cuentaCreada = cuentaDebitoService.crearCuentaDebito(cuentaDebito);
+        model.addAttribute(cuentaCreada);
+        model.addAttribute("success", "Cuenta creada al cliente " + cuentaCreada.getCliente().getNoCliente());
+        return URI_BASE + "cuenta-debito-agregar";
+    }
+
+
+
+
+
+
 
     @GetMapping("/deposito")
     public String deposito(Model model){

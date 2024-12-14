@@ -143,6 +143,13 @@ a, a:hover, a:active, a:visited{
     background-size: cover;
   }
 
+.bodyRoot {
+    background-image: url('../images/mineria.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+
 .bg-oro{
     background-color: rgba(213, 159, 15, 1);
 }

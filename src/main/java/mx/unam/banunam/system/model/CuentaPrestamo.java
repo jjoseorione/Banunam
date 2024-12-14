@@ -28,7 +28,7 @@ public class CuentaPrestamo {
     private Character periodicidad;
     private Double tasaInteresAnual;
     private Integer periodoActivo;
-    private Double saldoRestante;
+    private BigDecimal saldoRestante;
     private LocalDate fechaAprobacion;
 
     @PrePersist

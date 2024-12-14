@@ -5,28 +5,28 @@
     <meta charset="utf-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Customer Care Center</title>
+    <title>Spring Boot Tutorial</title>
     <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/styles/styles.css}" rel="stylesheet">
     <script th:src="@{/bootstrap/js/bootstrap.js}"></script>
     <script type="text/javascript" th:src="@{/js/funciones.js}"></script>
 </head>
-<body class="bodyLoginCCC">
+<body class="bodyRoot text-light">
 <div class="container mt-5">
     <div class="row">
-        <div class="col-lg-6 offset-lg-3 bg-oro text-white" style="border: 0.2em solid #ddd; padding: 3rem; border-radius: 1em;">
+        <div class="col-lg-6 offset-lg-3 p-5" style="background-color: rgba(0,0,0,0.6); ">
 
             <div class="tituloLogin mb-5 tituloLoginUA">
-                <h3>Banunam - Customer Care Center</h3>
+                <h3>Banunam - Banca en Línea</h3>
                 <h5>Login</h5>
             </div>
             <div th:if="${loginError}">
-                <div class="alert alert-danger">Usuario o contraseña incorrectos</div>
+                <div class="alert alert-danger">La información es incorrecta. Intenta nuevamente.</div>
             </div>
-            <form method="post" role="form" th:action="@{/customer-care-center/token}" class="form-horizontal">
+            <form method="post" role="form" th:action="@{/banca-en-linea/token}" class="form-horizontal">
                 <div class="form-group mb-3">
-                    <label class="control-label"> Usuario</label>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="ZPT****"/>
+                    <label class="control-label"> Número de TDD</label>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="**** **** **** 1234"/>
                 </div>
                 <div class="form-group mb-3">
                     <label class="control-label"> Contraseña</label>
@@ -39,5 +39,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>

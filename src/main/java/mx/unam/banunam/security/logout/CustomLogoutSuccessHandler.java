@@ -26,6 +26,13 @@ public class CustomLogoutSuccessHandler implements LogoutSuccessHandler {
                 log.info("Logout successfully");
                 response.sendRedirect(request.getContextPath());
             }
+
+            if (cookie.getName().equals("tokenCliente")) {
+                cookie.setMaxAge(0);
+                response.addCookie(cookie);
+                log.info("Logout successfully");
+                response.sendRedirect(request.getContextPath());
+            }
         }
     }
 }

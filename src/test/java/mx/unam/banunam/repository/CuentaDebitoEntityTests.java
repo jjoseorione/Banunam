@@ -4,16 +4,14 @@ import mx.unam.banunam.system.model.Cliente;
 import mx.unam.banunam.system.model.CuentaDebito;
 import mx.unam.banunam.system.repository.ClienteRepository;
 import mx.unam.banunam.system.repository.CuentaDebitoRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -81,6 +79,16 @@ public class CuentaDebitoEntityTests {
         System.out.println("Buscar clientes por cuenta de debito " + NO_CUENTA);
         Cliente cliente = cuentaDebitoRepository.findById(NO_CUENTA).get().getCliente();
         System.out.println(cliente);
+    }
+
+    @Transactional
+    @DisplayName(value = "Buscar clientes que no tengan cuenta de débito")
+    @Test
+    void findClienteWhereCuentaDebitoIsNull(){
+        System.out.println("Buscar clientes que no tengan cuentaDebito");
+        List<Cliente> clientes = clienteRepository.findWhereCuentaDebitoIsNull();
+        clientes.forEach(cliente -> Assertions.assertNull(cliente.getCuentaDebito()));
+        clientes.forEach(cliente -> System.out.println(cliente.getNoCliente() + " " + cliente.getCuentaDebito()));
     }
 
 

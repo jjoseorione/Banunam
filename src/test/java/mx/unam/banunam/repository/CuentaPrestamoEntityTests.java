@@ -62,7 +62,7 @@ public class CuentaPrestamoEntityTests {
             System.out.println("Cliente: " + cliente.get());
             CuentaPrestamo cuentaPrestamo =
                 CuentaPrestamo.builder().noCuenta(null).cliente(cliente.get()).montoSolicitado(BigDecimal.ZERO).noPeriodos(24)
-                    .periodicidad('Q').tasaInteresAnual(16.5).periodoActivo(1).saldoRestante(32000.0).fechaAprobacion(LocalDate.now()).build();
+                    .periodicidad('Q').tasaInteresAnual(16.5).periodoActivo(1).saldoRestante(BigDecimal.valueOf(32000.0)).fechaAprobacion(LocalDate.now()).build();
             cuentaPrestamoRepository.save(cuentaPrestamo);
             System.out.println(cuentaPrestamo);
         }
