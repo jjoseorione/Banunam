@@ -7,6 +7,7 @@ import mx.unam.banunam.auth.util.PropiedadesPerfiles;
 import mx.unam.banunam.security.jwt.JWTTokenProviderUsuario;
 import mx.unam.banunam.system.dto.ClienteDTO;
 import mx.unam.banunam.system.model.Cliente;
+import mx.unam.banunam.system.model.Domicilio;
 import mx.unam.banunam.system.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -74,42 +75,52 @@ public class ClienteCccController {
     }
 
     @GetMapping("/agregar")
-    public String crearCliente(Model model, ClienteDTO cliente){
+    public String crearCliente(Model model, @ModelAttribute("cliente") ClienteDTO cliente){
         String contrasena1 = "";
         if(cliente==null)
             cliente = new ClienteDTO();
         model.addAttribute("cliente", cliente);
         model.addAttribute("contrasena1", contrasena1);
+        model.addAttribute("idColonia", 0);
         return URI_BASE + "cliente-agregar";
     }
 
-//    @PostMapping("/agregar")
-//    public String validaAltaCliente(@Valid @ModelAttribute("cliente") ClienteDTO cliente, BindingResult result, String contrasena1, Model model, RedirectAttributes flash){
-//
-//        String errorMsg = "Error en la entrada de datos. Valide lo siguiente: ";
-//        List<String> listaErrores = new ArrayList<>();
-//        if(result.hasErrors()){
-//            for(ObjectError e: result.getAllErrors()){
-//                listaErrores.add("Campo " + ((FieldError)e).getField() + ": " + e.getDefaultMessage());
-//                System.out.println(listaErrores);
-//            }
-//
-//            flash.addFlashAttribute("danger", errorMsg);
-//            flash.addFlashAttribute("listaErrores", listaErrores);
-//            flash.addFlashAttribute("cliente", cliente);
-//            return "redirect: " + URI_BASE + "clientes/agregar";
-//        }
-//        if(!cliente.getContrasena().equals(contrasena1)){
-//            listaErrores.add("Las contraseñas no coinciden");
-//            flash.addFlashAttribute("danger", errorMsg);
-//            flash.addFlashAttribute("listaErrores", listaErrores);
-//            flash.addFlashAttribute("cliente", cliente);
-//            return "redirect: " + URI_BASE + "clientes/agregar";
-//        }
-//
-//        Cliente clienteCreado = clienteService.salvaCliente(cliente);
-//        model.addAttribute(clienteCreado);
-//        model.addAttribute("success", "Cliente creado");
-//        return "cliente/agregar-cliente";
-//    }
+    @PostMapping("/agregar")
+    public String validaAltaCliente(@Valid @ModelAttribute("cliente") ClienteDTO clienteRecibido, BindingResult result, String contrasena1,
+                                    String idColonia, Model model, RedirectAttributes flash){
+
+        log.info("########## JEEM: Información recibida:");
+        log.info("########## JEEM: {}: ", clienteRecibido);
+        log.info("########## JEEM: {}: ", contrasena1);
+        log.info("########## JEEM: {}: ", idColonia);
+        String errorMsg = "Error en la entrada de datos. Valide lo siguiente: ";
+        List<String> listaErrores = new ArrayList<>();
+        if(result.hasErrors()){
+            for(ObjectError e: result.getAllErrors()){
+                listaErrores.add(e.getDefaultMessage());
+                System.out.println(listaErrores);
+            }
+
+            flash.addFlashAttribute("danger", errorMsg);
+            flash.addFlashAttribute("listaErrores", listaErrores);
+            flash.addFlashAttribute("cliente", clienteRecibido);
+            return "redirect:" + URI_BASE + "agregar";
+        }
+        if(!clienteRecibido.getContrasena().equals(contrasena1)){
+            listaErrores.add("Las contraseñas no coinciden");
+            flash.addFlashAttribute("danger", errorMsg);
+            flash.addFlashAttribute("listaErrores", listaErrores);
+            flash.addFlashAttribute("cliente", clienteRecibido);
+            return "redirect:" + URI_BASE + "agregar";
+        }
+
+        ClienteDTO clienteCreado = clienteService.salvar(clienteService.convertirEnEntidad(clienteRecibido), false);
+        clienteRecibido.setNoCliente(clienteCreado.getNoCliente());
+        clienteService.salvarDomicilio(clienteRecibido, Integer.parseInt(idColonia));
+//        ClienteDTO clienteCreado = clienteService.buscarClientePorNoCliente()
+
+        model.addAttribute(clienteCreado);
+        model.addAttribute("success", "Cliente creado");
+        return URI_BASE + "cliente-agregar";
+    }
 }

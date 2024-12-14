@@ -43,7 +43,7 @@ public class Cliente {
     @NotNull(message = "Debe introducir el email")
     @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "El formato de email es incorrecto")
     private String correo;
-    @Length(min=8, max=30, message = "La contraseña debe tener entre 8 y 30 caracteres")
+    //@Length(min=8, max=30, message = "La contraseña debe tener entre 8 y 30 caracteres")
     private String contrasena;
     @NotNull(message = "Debe introducir un número telefónico")
     @Length(min=5, max=30, message="El número telefónico debe contener entre 5 y 30 posiciones")

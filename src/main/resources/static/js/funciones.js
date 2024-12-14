@@ -23,25 +23,31 @@ function eliminarUsuario(idUsuario, usuario, usuarioFirmado){
     }
 
 //customer-care-center
+var colonias = new Map();
 async function buscarColonias(){
     let cp = document.getElementById("cp").value;
     let endpoint = "/customer-care-center/colonias/" + cp;
-    let select = document.getElementById("colonia")
-    select.innerHTML = "<option selected disabled>Selecciona tu colonia...</option>";
+    let select = document.getElementById("colonia");
+    select.innerHTML = '<option value="">Selecciona la colonia...</option>'
     console.log(endpoint);
     const response = await fetch(endpoint, {
         method: "GET"
     });
     response.json().then((data) => {
         data.forEach(element => {
-            //console.log(element.nombre);
-            //console.log(element.municipio);
-            //console.log(element.estado);
             let option = document.createElement("option");
             option.textContent = element.nombre + ", " + element.municipio + ", " + element.estado;
-            option.value = element.id_colonia
+            option.value = option.textContent;
             select.appendChild(option);
+            colonias.set(option.textContent, element.id_colonia);
         })
     });
-    
+    console.log(colonias);
+
+}
+
+function obtieneIdColonia(){
+    let hidden = document.getElementById("idColonia");
+    let select = document.getElementById("colonia");
+    hidden.value = colonias.get(select.value);
 }

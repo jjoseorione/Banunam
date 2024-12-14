@@ -23,7 +23,7 @@ public class Domicilio {
     @Pattern(regexp = "^[A-zÀ-ú0-9]+(\\s?[A-zÀ-ú0-9]+)*$", message = "El nombre sólo puede contener caracteres alfabéticos y espacios entre palabras")
     @Length(min = 1,max = 100, message = "La calle no puede ser mayor a 100 caracteres")
     private String calle;
-    @Length(min = 1,max = 30, message = "Número interior no puede ser mayor a 30 caracteres")
+    @Length(max = 30, message = "Número interior no puede ser mayor a 30 caracteres")
     private String numInterior;
     @Length(min = 1,max = 30, message = "Número exterior no puede ser mayor a 30 caracteres")
     private String numExterior;

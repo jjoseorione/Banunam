@@ -2,10 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org"
       lang="es">
 <head th:replace="~{/layouts/layout-ccc :: head}"></head>
-<body class="bodyHomeCCC text-white">
+<body class="bodyHomeCCC text-white" th:attr="onload=|buscarColonias('${cp}')|">
     <header th:replace="~{/layouts/layout-ccc :: header}"></header>
         <div class="container py-3 mt-5 bg-oro-alpha">
-            <form th:action="@{/clientes/agregar}" method="post" th:object="${cliente}">
+            <form th:action="@{/customer-care-center/clientes/agregar}" method="post" th:object="${cliente}">
                 <h3 class="tituloFormulario mb-3 ms-3 me-3">Agregar Cliente</h3>
                 <div class="row g-5">
                     <div class="col-lg-4">
@@ -80,9 +80,10 @@
                         <label for="colonia" class="form-label">
                             Colonia
                         </label>
-                        <select class="form-control" th:value="*{colonia}" id="colonia" required>
-                            <option selected disabled>Selecciona tu colonia...</option>
+                        <select class="form-control" th:value="*{colonia}" id="colonia" th:required="true">
+                            <option value="">Selecciona la colonia...</option>
                         </select>
+                        <input type="hidden" th:value="${idColonia}" id="idColonia" name="idColonia"/>
                     </div>
 
                     <hr/>
@@ -105,7 +106,7 @@
                         <input th:value="${contrasena1}" type="password" name="contrasena1" class="form-control" id="contrasena1" required>
                     </div>
                     <div class="col-12" style="text-align: right;">
-                        <input type="submit" value="Enviar" class="btn btn-primary">
+                        <input type="submit" value="Enviar" class="btn btn-primary" onclick="obtieneIdColonia()">
                     </div>
             </form>
         </div>

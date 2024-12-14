@@ -1,11 +1,14 @@
 package mx.unam.banunam.system.service.impl;
 
 import mx.unam.banunam.system.dto.ClienteDTO;
+import mx.unam.banunam.system.exception.ClienteAlreadyExistsException;
 import mx.unam.banunam.system.model.*;
 import mx.unam.banunam.system.repository.*;
 import mx.unam.banunam.system.service.ClienteService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +25,9 @@ public class ClienteServiceImpl implements ClienteService {
     CuentaCreditoRepository cuentaCreditorepository;
     @Autowired
     CuentaPrestamoRepository cuentaPrestamoRepository;
+    @Qualifier("passwordEncoderUser")
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     ColoniaRepository coloniaRepository;
@@ -32,17 +38,8 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente convertirEnEntidad(ClienteDTO dto) {
-        Cliente cliente = modelMapper.map(dto, Cliente.class);
-        Domicilio domicilio = domicilioRepository.findByClienteNoCliente(dto.getNoCliente()).orElse(null);
-        CuentaDebito cuentaDebito = cuentaDebitoRepository.findByClienteNoCliente(dto.getNoCliente()).orElse(null);
-        CuentaCredito cuentaCredito = cuentaCreditorepository.findByClienteNoCliente(dto.getNoCliente()).orElse(null);
-        CuentaPrestamo cuentaPrestamo = cuentaPrestamoRepository.findByClienteNoCliente(dto.getNoCliente()).orElse(null);
-        cliente.setDomicilio(domicilio);
-        cliente.setCuentaDebito(cuentaDebito);
-        cliente.setCuentaCredito(cuentaCredito);
-        cliente.setCuentaPrestamo(cuentaPrestamo);
-
-        return cliente;
+        //Sólo mapea los campos directos. El domicilio y las cuentas deben llenarse por separado
+        return modelMapper.map(dto, Cliente.class);
     }
 
     @Override
@@ -57,12 +54,41 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public ClienteDTO salvar(ClienteDTO cliente) {
-        return null;
+    public ClienteDTO salvar(Cliente cliente, Boolean update) {
+        cliente.setContrasena(passwordEncoder.encode(cliente.getContrasena()));
+        if(update)
+            return convertirEnDTO(clienteRepository.save(cliente));
+        else{
+            if(clienteRepository.existsByRfc(cliente.getRfc()))
+                throw new ClienteAlreadyExistsException("RFC", cliente.getRfc());
+            if(clienteRepository.existsByCorreo(cliente.getCorreo()))
+                throw new ClienteAlreadyExistsException("correo", cliente.getCorreo());
+
+            return convertirEnDTO(clienteRepository.save(cliente));
+        }
+    }
+
+    @Override
+    public Domicilio salvarDomicilio(Domicilio domicilio) {
+        return domicilioRepository.save(domicilio);
+    }
+
+    @Override
+    public Domicilio salvarDomicilio(ClienteDTO clienteDTO, Integer idColonia) {
+        Domicilio domicilio = Domicilio.builder()
+                .calle(clienteDTO.getCalle())
+                .numInterior(clienteDTO.getNumInterior())
+                .numExterior((clienteDTO.getNumExterior()))
+                .cliente(clienteRepository.findById(clienteDTO.getNoCliente()).orElse(null))
+                .colonia(coloniaRepository.findById((idColonia)).orElse(null))
+                .build();
+        return domicilioRepository.save(domicilio);
     }
 
     @Override
     public List<Cliente> listarClientes() {
         return (List<Cliente>) clienteRepository.findAll();
     }
+
+
 }
