@@ -18,4 +18,7 @@ public interface ClienteRepository extends CrudRepository<Cliente,Integer>, Pagi
 
     @Query(value = "SELECT c FROM Cliente c WHERE c.cuentaDebito IS NULL")
     List<Cliente> findWhereCuentaDebitoIsNull();
+
+    @Query(value = "SELECT c FROM Cliente c WHERE c.cuentaCredito IS NULL")
+    List<Cliente> findWhereCuentaCreditoIsNull();
 }

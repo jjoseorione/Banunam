@@ -26,11 +26,11 @@
             <form method="post" role="form" th:action="@{/banca-en-linea/token}" class="form-horizontal">
                 <div class="form-group mb-3">
                     <label class="control-label"> Número de TDD</label>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="**** **** **** 1234"/>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="**** **** **** 1234" th:required="required"/>
                 </div>
                 <div class="form-group mb-3">
                     <label class="control-label"> Contraseña</label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="*******"/>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="*******" th:required="required"/>
                 </div>
                 <div class="form-group mb-3">
                     <button type="submit" class="btn btn-primary">Enviar</button>

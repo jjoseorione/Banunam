@@ -29,7 +29,7 @@ public class UsuarioDTO {
     @Pattern(regexp = "^([A-zÀ-ú]+(\\s?[A-zÀ-ú]+)*)*$", message = "El apellido sólo puede contener caracteres alfabéticos y espacios entre palabras")
     private String apellido2;
     @NotBlank(message = "El correo no puede quedar vacío")
-    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "El formato del correo no es válido")
     private String correo;
     @NotBlank(message = "La contraseña no puede quedar vacía")
     @Length(message = "La contraseña debe tener entre 5 y 30 caracteres", min=5, max=30)

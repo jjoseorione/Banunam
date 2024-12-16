@@ -84,7 +84,7 @@ public class MovimientoCreditoEntityTests {
                     .tipoMov(tipoMovimiento)
                     .cuentaCredito(cliente.getCuentaCredito())
                     .origenDestino("10000001")
-                    .tipo_origen_destino(origenDestinoMovimiento)
+                    .tipoOrigenDestino(origenDestinoMovimiento)
                     .concepto("Prueba de movimiento de crédito")
                     .build();
             movimientoCreditoRepository.save(movimientoCredito);

@@ -81,15 +81,5 @@ public class CuentaDebitoEntityTests {
         System.out.println(cliente);
     }
 
-    @Transactional
-    @DisplayName(value = "Buscar clientes que no tengan cuenta de débito")
-    @Test
-    void findClienteWhereCuentaDebitoIsNull(){
-        System.out.println("Buscar clientes que no tengan cuentaDebito");
-        List<Cliente> clientes = clienteRepository.findWhereCuentaDebitoIsNull();
-        clientes.forEach(cliente -> Assertions.assertNull(cliente.getCuentaDebito()));
-        clientes.forEach(cliente -> System.out.println(cliente.getNoCliente() + " " + cliente.getCuentaDebito()));
-    }
-
 
 }

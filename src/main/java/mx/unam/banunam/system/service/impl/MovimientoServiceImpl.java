@@ -1,20 +1,17 @@
 package mx.unam.banunam.system.service.impl;
 
-import mx.unam.banunam.system.model.CuentaDebito;
-import mx.unam.banunam.system.model.MovimientoDebito;
-import mx.unam.banunam.system.model.OrigenDestinoMovimiento;
-import mx.unam.banunam.system.model.TipoMovimiento;
-import mx.unam.banunam.system.repository.CuentaDebitoRepository;
-import mx.unam.banunam.system.repository.MovimientoDebitoRepository;
-import mx.unam.banunam.system.repository.OrigenDestinoMovimientoRepository;
-import mx.unam.banunam.system.repository.TipoMovimientoRepository;
+import lombok.extern.slf4j.Slf4j;
+import mx.unam.banunam.system.model.*;
+import mx.unam.banunam.system.repository.*;
 import mx.unam.banunam.system.service.MovimientoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
+@Slf4j
 @Service
 public class MovimientoServiceImpl implements MovimientoService {
     @Autowired
@@ -25,10 +22,16 @@ public class MovimientoServiceImpl implements MovimientoService {
     private CuentaDebitoRepository cuentaDebitoRepository;
     @Autowired
     private MovimientoDebitoRepository movimientoDebitoRepository;
+    @Autowired
+    private CuentaCreditoRepository cuentaCreditoRepository;
+    @Autowired
+    private MovimientoCreditoRepository movimientoCreditoRepository;
 
+
+    //ToDo: Estos métodos deben sustituirse por uno general que esté parametrizado para realizar cualquier tipo de movimiento
     @Override
     @Transactional
-    public MovimientoDebito realizarDeposito(BigDecimal monto, Integer noCuentaDebito, String origenDestino, String concepto) {
+    public MovimientoDebito realizarDepositoDebito(BigDecimal monto, Integer noCuentaDebito, String origenDestino, String concepto) {
         TipoMovimiento tipoMovimiento = tipoMovimientoRepository.findById(3).orElse(null);
         CuentaDebito cuentaDebito = cuentaDebitoRepository.findById(noCuentaDebito).orElse(null);
         OrigenDestinoMovimiento origenDestinoMovimiento = origenDestinoMovimientoRepository.findById(7).orElse(null);
@@ -53,7 +56,7 @@ public class MovimientoServiceImpl implements MovimientoService {
 
     @Override
     @Transactional
-    public MovimientoDebito realizarRetiro(BigDecimal monto, Integer noCuentaDebito, String origenDestino, String concepto) {
+    public MovimientoDebito realizarRetiroDebito(BigDecimal monto, Integer noCuentaDebito, String origenDestino, String concepto) {
         TipoMovimiento tipoMovimiento = tipoMovimientoRepository.findById(6).orElse(null);
         CuentaDebito cuentaDebito = cuentaDebitoRepository.findById(noCuentaDebito).orElse(null);
         OrigenDestinoMovimiento origenDestinoMovimiento = origenDestinoMovimientoRepository.findById(7).orElse(null);
@@ -73,6 +76,65 @@ public class MovimientoServiceImpl implements MovimientoService {
                 .build();
         movimientoDebitoRepository.save(mov);
         cuentaDebito.setSaldo(cuentaDebito.getSaldo().subtract(mov.getMonto()));
+        return mov;
+    }
+
+    @Override
+    @Transactional
+    public MovimientoCredito realizarDepositoCredito(BigDecimal monto, Integer noCuentaCredito, String origenDestino, String concepto) {
+        TipoMovimiento tipoMovimiento = tipoMovimientoRepository.findById(7).orElse(null);
+        CuentaCredito cuentaCredito = cuentaCreditoRepository.findById(noCuentaCredito).orElse(null);
+        OrigenDestinoMovimiento origenDestinoMovimiento = origenDestinoMovimientoRepository.findById(7).orElse(null);
+
+        if(tipoMovimiento == null || cuentaCredito == null || origenDestinoMovimiento == null)
+            return null;
+
+        MovimientoCredito mov = MovimientoCredito.builder()
+                .folio(null)
+                .timestampMov(null)
+                .monto(monto)
+                .tipoMov(tipoMovimiento)
+                .cuentaCredito(cuentaCredito)
+                .origenDestino(origenDestino)
+                .tipoOrigenDestino(origenDestinoMovimiento)
+                .concepto("Depósito en sucursal " + cuentaCredito.getCliente().getDomicilio().getColonia().getNombre())
+                .build();
+        movimientoCreditoRepository.save(mov);
+        cuentaCredito.setSaldoUtilizado(cuentaCredito.getSaldoUtilizado().subtract(mov.getMonto()));
+        return mov;
+    }
+
+    @Override
+    @Transactional
+    public MovimientoCredito realizarRetiroCredito(BigDecimal monto, Integer noCuentaCredito, String origenDestino, String concepto) {
+        TipoMovimiento tipoMovimiento = tipoMovimientoRepository.findById(6).orElse(null);
+        CuentaCredito cuentaCredito = cuentaCreditoRepository.findById(noCuentaCredito).orElse(null);
+        OrigenDestinoMovimiento origenDestinoMovimiento = origenDestinoMovimientoRepository.findById(7).orElse(null);
+
+        if(tipoMovimiento == null || cuentaCredito == null || origenDestinoMovimiento == null)
+            return null;
+
+        BigDecimal comision = cuentaCredito.getTasaInteresAnual().divide(BigDecimal.valueOf(12), 2, RoundingMode.HALF_UP);
+        log.info("########## JEEM: MovimientoServiceImpl.realizarRetiroCredito: tasa Interes Anual: {}", cuentaCredito.getTasaInteresAnual());
+        log.info("########## JEEM: MovimientoServiceImpl.realizarRetiroCredito: comision: {}", comision);
+
+
+        MovimientoCredito mov = MovimientoCredito.builder()
+                .folio(null)
+                .timestampMov(null)
+                .monto(monto)
+                .tipoMov(tipoMovimiento)
+                .cuentaCredito(cuentaCredito)
+                .origenDestino(origenDestino)
+                .tipoOrigenDestino(origenDestinoMovimiento)
+                .concepto("Retiro en sucursal " + cuentaCredito.getCliente().getDomicilio().getColonia().getNombre() + " comisión $" + comision)
+                .build();
+        movimientoCreditoRepository.save(mov);
+
+        comision = comision.divide(BigDecimal.valueOf(100), 5, RoundingMode.HALF_UP);
+        comision = comision.add(BigDecimal.ONE);
+        monto = monto.multiply(comision);
+        cuentaCredito.setSaldoUtilizado(cuentaCredito.getSaldoUtilizado().add(monto));
         return mov;
     }
 }

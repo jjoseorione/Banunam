@@ -7,8 +7,10 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -75,6 +77,26 @@ public class ClienteEntityTests{
         Assertions.assertNotNull(cliente);
         Assertions.assertEquals(NO_CLIENTE_ESPERADO ,cliente.getNoCliente());
         System.out.println(cliente);
+    }
+
+    @Transactional
+    @DisplayName(value = "Buscar clientes que no tengan cuenta de débito")
+    @Test
+    void findClienteWhereCuentaDebitoIsNull(){
+        System.out.println("Buscar clientes que no tengan cuentaDebito");
+        List<Cliente> clientes = clienteRepository.findWhereCuentaDebitoIsNull();
+        clientes.forEach(cliente -> Assertions.assertNull(cliente.getCuentaDebito()));
+        clientes.forEach(cliente -> System.out.println(cliente.getNoCliente() + " " + cliente.getCuentaDebito()));
+    }
+
+    @Transactional
+    @DisplayName(value = "Buscar clientes que no tengan cuenta de crédito")
+    @Test
+    void findClienteWhereCuentaCreditoIsNull(){
+        System.out.println("Buscar clientes que no tengan cuentaCredito");
+        List<Cliente> clientes = clienteRepository.findWhereCuentaCreditoIsNull();
+        clientes.forEach(cliente -> Assertions.assertNull(cliente.getCuentaCredito()));
+        clientes.forEach(cliente -> System.out.println(cliente.getNoCliente() + " " + cliente.getCuentaCredito()));
     }
 
 

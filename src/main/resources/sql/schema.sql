@@ -174,7 +174,7 @@ CREATE TABLE movimientos_credito(
 	no_cuenta INT UNSIGNED NOT NULL,
 	origen_destino VARCHAR(30) NOT NULL,
 	tipo_origen_destino TINYINT UNSIGNED NOT NULL,
-	concepto VARCHAR(50) NULL,
+	concepto VARCHAR(100) NULL,
 
 
 	CONSTRAINT fk_tipoMovimiento_movimientosCredito FOREIGN KEY (tipo_mov) REFERENCES tipos_movimiento (tipo_mov),

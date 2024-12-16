@@ -4,10 +4,11 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import mx.unam.banunam.system.dto.ClienteDTO;
-import mx.unam.banunam.system.model.CuentaDebito;
+import mx.unam.banunam.system.model.CuentaCredito;
+import mx.unam.banunam.system.model.MovimientoCredito;
 import mx.unam.banunam.system.model.MovimientoDebito;
 import mx.unam.banunam.system.service.ClienteService;
-import mx.unam.banunam.system.service.CuentaDebitoService;
+import mx.unam.banunam.system.service.CuentaCreditoService;
 import mx.unam.banunam.system.service.MovimientoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,56 +28,56 @@ import java.util.Objects;
 
 @Slf4j
 @Controller
-@RequestMapping(path = "/customer-care-center/cuentas-debito/")
+@RequestMapping(path = "/customer-care-center/cuentas-credito/")
 @PreAuthorize("hasRole(${perfil.usuario.tipo2})")
-public class CuentaDebitoCccController {
+public class CuentaCreditoCccController {
     @Autowired
-    private CuentaDebitoService cuentaDebitoService;
+    private CuentaCreditoService cuentaCreditoService;
     @Autowired
     private MovimientoService movimientoService;
     @Autowired
     private ClienteService clienteService;
 
-    private final String URI_BASE = "/customer-care-center/cuentas-debito/";
+    private final String URI_BASE = "/customer-care-center/cuentas-credito/";
 
     @GetMapping("/buscar")
-    public String buscarCuentaDebito(Model model){
-        model.addAttribute("cuentaDebito", new CuentaDebito());
-        return URI_BASE + "cuenta-debito-buscar";
+    public String buscarCuentaCredito(Model model){
+        model.addAttribute("cuentaCredito", new CuentaCredito());
+        return URI_BASE + "cuenta-credito-buscar";
     }
 
     @PostMapping("/buscar")
-    public String buscarCuentaDebito(@Valid @ModelAttribute("cuentaDebito") CuentaDebito cuentaDebito, BindingResult result, Model model){
+    public String buscarCuentaCredito(@Valid @ModelAttribute("cuentaCredito") CuentaCredito cuentaCredito, BindingResult result, Model model){
         if(result.hasErrors()){
             model.addAttribute("danger", "Error en la entrada de datos.");
-            return URI_BASE + "cuenta-debito-buscar";
+            return URI_BASE + "cuenta-credito-buscar";
         }
-        log.info("########## JEEM: Número a buscar: {}", cuentaDebito.getNoCuenta());
-        CuentaDebito cuentaDebitoBD = cuentaDebitoService.buscarCuentaDebitoPorNoCuenta(cuentaDebito.getNoCuenta());
-        log.info("########## JEEM: Cuenta encontrada: {}", cuentaDebitoBD);
-        model.addAttribute("cuentaDebitoBD", cuentaDebitoBD);
-        return URI_BASE + "cuenta-debito-buscar";
+        log.info("########## JEEM: Número a buscar: {}", cuentaCredito.getNoCuenta());
+        CuentaCredito cuentaCreditoBD = cuentaCreditoService.buscarCuentaCreditoPorNoCuenta(cuentaCredito.getNoCuenta());
+        log.info("########## JEEM: Cuenta encontrada: {}", cuentaCreditoBD);
+        model.addAttribute("cuentaCreditoBD", cuentaCreditoBD);
+        return URI_BASE + "cuenta-credito-buscar";
     }
 
     @GetMapping("/crear")
-    public String crearCuentaDebito(Model model, CuentaDebito cuentaDebito){
-        List<ClienteDTO> listaClientes = clienteService.listarClientesSinCuentaDebito();
-        if(cuentaDebito == null)
-            cuentaDebito = new CuentaDebito();
+    public String crearCuentaCredito(Model model, CuentaCredito cuentaCredito){
+        List<ClienteDTO> listaClientes = clienteService.listarClientesSinCuentaCredito();
+        if(cuentaCredito == null)
+            cuentaCredito = new CuentaCredito();
         if(listaClientes.isEmpty())
-            model.addAttribute("danger", "Todos los clientes tienen ya una cuenta de débito");
+            model.addAttribute("danger", "Todos los clientes tienen ya una cuenta de crédito");
         else
             model.addAttribute("listaClientes", listaClientes);
-        model.addAttribute("cuentaDebito", cuentaDebito);
-        return URI_BASE + "cuenta-debito-agregar";
+        model.addAttribute("cuentaCredito", cuentaCredito);
+        return URI_BASE + "cuenta-credito-agregar";
     }
 
     @PostMapping("/crear")
-    public String validaCuenta(@Valid @ModelAttribute("cuentaDebito") CuentaDebito cuentaDebito, BindingResult result,
+    public String validaCuenta(@Valid @ModelAttribute("cuentaCredito") CuentaCredito cuentaCredito, BindingResult result,
                                     Model model, RedirectAttributes flash){
         String errorMsg = "Error en la entrada de datos. Valide lo siguiente: ";
         List<String> listaErrores = new ArrayList<>();
-        log.info("########## JEEM: Cuenta recibida: {}", cuentaDebito);
+        log.info("########## JEEM: Cuenta recibida: {}", cuentaCredito);
         if(result.hasErrors()){
             for(ObjectError e: result.getAllErrors()){
                 listaErrores.add(e.getDefaultMessage());
@@ -85,42 +86,42 @@ public class CuentaDebitoCccController {
 
             flash.addFlashAttribute("danger", errorMsg);
             flash.addFlashAttribute("listaErrores", listaErrores);
-            flash.addFlashAttribute("cuentaDebito", cuentaDebito);
-            return "redirect:" + URI_BASE + "agregar";
+            flash.addFlashAttribute("cuentaCredito", cuentaCredito);
+            return "redirect:" + URI_BASE + "crear";
         }
 
-        CuentaDebito cuentaCreada = cuentaDebitoService.crearCuentaDebito(cuentaDebito);
+        CuentaCredito cuentaCreada = cuentaCreditoService.crearCuentaCredito(cuentaCredito);
         model.addAttribute(cuentaCreada);
-        model.addAttribute("success", "Cuenta creada al cliente " + cuentaCreada.getCliente().getNoCliente());
-        return URI_BASE + "cuenta-debito-agregar";
+        model.addAttribute("success", "Cuenta " + cuentaCreada.getNoCuenta() + " creada al cliente " + cuentaCreada.getCliente().getNoCliente());
+        return URI_BASE + "cuenta-credito-agregar";
     }
 
 
     @GetMapping("/deposito")
     public String deposito(Model model){
-        model.addAttribute("cuentaDebito", new CuentaDebito());
-        return URI_BASE + "cuenta-debito-deposito";
+        model.addAttribute("cuentaCredito", new CuentaCredito());
+        return URI_BASE + "cuenta-credito-deposito";
     }
 
     @PostMapping("/deposito")
-    public String deposito(@Valid @ModelAttribute("cuentaDebito") CuentaDebito cuentaDebito, BindingResult result, Model model){
+    public String deposito(@Valid @ModelAttribute("cuentaCredito") CuentaCredito cuentaCredito, BindingResult result, Model model){
         if(result.hasErrors()){
             model.addAttribute("danger", "Error en la entrada de datos.");
-            return URI_BASE + "cuenta-debito-buscar";
+            return URI_BASE + "cuenta-credito-buscar";
         }
-        log.info("########## JEEM: Número a buscar: {}", cuentaDebito.getNoCuenta());
-        CuentaDebito cuentaDebitoBD = cuentaDebitoService.buscarCuentaDebitoPorNoCuenta(cuentaDebito.getNoCuenta());
-        log.info("########## JEEM: Cuenta encontrada: {}", cuentaDebitoBD);
-        model.addAttribute("cuentaDebitoBD", cuentaDebitoBD);
-        model.addAttribute("deposito", new MovimientoDebito());
-        return URI_BASE + "cuenta-debito-deposito";
+        log.info("########## JEEM: Número a buscar: {}", cuentaCredito.getNoCuenta());
+        CuentaCredito cuentaCreditoBD = cuentaCreditoService.buscarCuentaCreditoPorNoCuenta(cuentaCredito.getNoCuenta());
+        log.info("########## JEEM: Cuenta encontrada: {}", cuentaCreditoBD);
+        model.addAttribute("cuentaCreditoBD", cuentaCreditoBD);
+        model.addAttribute("deposito", new MovimientoCredito());
+        return URI_BASE + "cuenta-credito-deposito";
     }
 
     @PostMapping("/confirmarDeposito")
-    public String confirmarDeposito(@Valid @ModelAttribute("movimientoDebito") MovimientoDebito movimientoDebito, BindingResult result,
+    public String confirmarDeposito(@Valid @ModelAttribute("movimientoCredito") MovimientoCredito movimientoCredito, BindingResult result,
                                     Integer noCuenta, Model model, HttpSession session, RedirectAttributes flash){
         log.info("########## JEEM: Información recibida:");
-        log.info("########## JEEM: {}", movimientoDebito);
+        log.info("########## JEEM: {}", movimientoCredito);
         log.info("########## JEEM: {}", noCuenta);
         List<String> listaErrores = new ArrayList<>();
         String errorMsg = "";
@@ -135,35 +136,35 @@ public class CuentaDebitoCccController {
             return "redirect:" + URI_BASE + "deposito";
         }
 
-        MovimientoDebito movimientoCreado = movimientoService.realizarDepositoDebito(movimientoDebito.getMonto(), noCuenta, (String) session.getAttribute("usuarioFirmado"), "Depósito en sucursal");
+        MovimientoCredito movimientoCreado = movimientoService.realizarDepositoCredito(movimientoCredito.getMonto(), noCuenta, (String) session.getAttribute("usuarioFirmado"), "Depósito en sucursal");
         if(movimientoCreado == null){
             errorMsg = "Error al realizar el depósito";
             flash.addFlashAttribute("danger", errorMsg);
             return "redirect:" + URI_BASE + "deposito";
         }
-        String successMsg = "Se realizó el depósito por " + movimientoDebito.getMonto() + " a la cuenta " + noCuenta;
+        String successMsg = "Se realizó el depósito por " + movimientoCredito.getMonto() + " a la cuenta " + noCuenta;
         flash.addFlashAttribute("success", successMsg);
         return "redirect:" + URI_BASE + "deposito";
     }
 
     @GetMapping("/retiro")
     public String retiro(Model model){
-        model.addAttribute("cuentaDebito", new CuentaDebito());
-        return URI_BASE + "cuenta-debito-retiro";
+        model.addAttribute("cuentaCredito", new CuentaCredito());
+        return URI_BASE + "cuenta-credito-retiro";
     }
 
     @PostMapping("/retiro")
-    public String retiro(@Valid @ModelAttribute("cuentaDebito") CuentaDebito cuentaDebito, BindingResult result, Model model){
+    public String retiro(@Valid @ModelAttribute("cuentaCredito") CuentaCredito cuentaCredito, BindingResult result, Model model){
         if(result.hasErrors()){
             model.addAttribute("danger", "Error en la entrada de datos.");
-            return URI_BASE + "cuenta-debito-buscar";
+            return URI_BASE + "cuenta-credito-buscar";
         }
-        log.info("########## JEEM: Número a buscar: {}", cuentaDebito.getNoCuenta());
-        CuentaDebito cuentaDebitoBD = cuentaDebitoService.buscarCuentaDebitoPorNoCuenta(cuentaDebito.getNoCuenta());
-        log.info("########## JEEM: Cuenta encontrada: {}", cuentaDebitoBD);
-        model.addAttribute("cuentaDebitoBD", cuentaDebitoBD);
-        model.addAttribute("retiro", new MovimientoDebito());
-        return URI_BASE + "cuenta-debito-retiro";
+        log.info("########## JEEM: Número a buscar: {}", cuentaCredito.getNoCuenta());
+        CuentaCredito cuentaCreditoBD = cuentaCreditoService.buscarCuentaCreditoPorNoCuenta(cuentaCredito.getNoCuenta());
+        log.info("########## JEEM: Cuenta encontrada: {}", cuentaCreditoBD);
+        model.addAttribute("cuentaCreditoBD", cuentaCreditoBD);
+        model.addAttribute("retiro", new MovimientoCredito());
+        return URI_BASE + "cuenta-credito-retiro";
     }
 
     @PostMapping("/confirmarRetiro")
@@ -185,7 +186,7 @@ public class CuentaDebitoCccController {
             return "redirect:" + URI_BASE + "retiro";
         }
 
-        MovimientoDebito movimientoCreado = movimientoService.realizarRetiroDebito(movimientoDebito.getMonto(), noCuenta, (String) session.getAttribute("usuarioFirmado"), "Retiro en sucursal");
+        MovimientoCredito movimientoCreado = movimientoService.realizarRetiroCredito(movimientoDebito.getMonto(), noCuenta, (String) session.getAttribute("usuarioFirmado"), "Retiro en sucursal");
         if(movimientoCreado == null){
             errorMsg = "Error al realizar el retiro";
             flash.addFlashAttribute("danger", errorMsg);
@@ -198,20 +199,21 @@ public class CuentaDebitoCccController {
 
     @GetMapping("/movimientos")
     public String verMovimientos(Model model){
-        model.addAttribute("cuentaDebito", new CuentaDebito());
+        model.addAttribute("cuentaCredito", new CuentaCredito());
         return URI_BASE + "movimientos-buscar";
     }
 
     @PostMapping("/movimientos")
-    public String verMovimientos(@Valid @ModelAttribute("cuentaDebito") CuentaDebito cuentaDebito, BindingResult result, Model model){
+    public String verMovimientos(@Valid @ModelAttribute("cuentaCredito") CuentaCredito cuentaCredito, BindingResult result, Model model){
         if(result.hasErrors()){
             model.addAttribute("danger", "Error en la entrada de datos. ");
             return URI_BASE + "movimientos-buscar";
         }
-        System.out.println(cuentaDebito.getNoCuenta());
-        List<MovimientoDebito> listaMovimientos = cuentaDebitoService.buscarMovimientosPorNoCuenta(cuentaDebito.getNoCuenta());
+        System.out.println(cuentaCredito.getNoCuenta());
+        List<MovimientoCredito> listaMovimientos = cuentaCreditoService.buscarMovimientosPorNoCuenta(cuentaCredito.getNoCuenta());
         System.out.println(listaMovimientos);
         model.addAttribute("listaMovimientos", listaMovimientos);
         return URI_BASE + "movimientos-buscar";
     }
+
 }

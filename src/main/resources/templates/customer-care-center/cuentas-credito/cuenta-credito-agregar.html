@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="es">
+<head th:replace="~{/layouts/layout-ccc :: head}"></head>
+<body class="bodyHomeCCC text-white">
+<header th:replace="~{/layouts/layout-ccc :: header}"></header>
+<div class="container py-3 px-5 mt-5 bg-oro-alpha">
+    <form th:action="@{crear}" method="post" th:object="${cuentaCredito}">
+        <h3 class="tituloFormulario mb-3 ms-3 me-3">Crear Cuenta de Crédito</h3>
+        <div class="row g-5 lay justify-content-center">
+            <div class="col-lg-6">
+                <label for="cliente" class="form-label">
+                    Cliente:
+                </label>
+                <select class="form-control" th:field="*{cliente}" id="cliente" name="cliente" th:required="true">
+                    <option value="">Seleccione un cliente...</option>
+                    <option th:each="sel : ${listaClientes}" th:value="${sel.noCliente}" th:text="${sel.noCliente} + ' ' + ${sel.nombre} + ' ' + ${sel.apellido1} + ' ' + ${sel.apellido2}"/>
+                </select>
+            </div>
+            <div class="col-lg-3">
+                <label for="limCredito" class="form-label">
+                    Límite de crédito:
+                </label>
+                <input th:field="*{limCredito}" type="text" name="limCredito" class="form-control" id="limCredito" required>
+            </div>
+            <div class="col-lg-3">
+                <label for="tasaInteresAnual" class="form-label">
+                    Tasa anual:
+                </label>
+                <input th:field="*{tasaInteresAnual}" type="text" name="tasaInteresAnual" class="form-control" id="tasaInteresAnual" required>
+            </div>
+
+            <div class="col-12" style="text-align:right;">
+                <input type="submit" value="Enviar" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
+<div th:replace="~{layouts/layout-ccc :: footer}"></div>
+</div>
+</body>
+</html>

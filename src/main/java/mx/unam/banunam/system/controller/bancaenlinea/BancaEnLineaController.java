@@ -2,9 +2,7 @@ package mx.unam.banunam.system.controller.bancaenlinea;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
-import mx.unam.banunam.system.model.CuentaCredito;
-import mx.unam.banunam.system.model.CuentaDebito;
-import mx.unam.banunam.system.model.CuentaPrestamo;
+import mx.unam.banunam.system.model.*;
 import mx.unam.banunam.system.service.CuentaCreditoService;
 import mx.unam.banunam.system.service.CuentaDebitoService;
 import mx.unam.banunam.system.service.CuentaPrestamoService;
@@ -14,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -26,6 +26,7 @@ public class BancaEnLineaController {
     CuentaCreditoService cuentaCreditoService;
     @Autowired
     CuentaPrestamoService cuentaPrestamoService;
+
 
     private final String URI_BASE = "/banca-en-linea/";
 
@@ -60,6 +61,44 @@ public class BancaEnLineaController {
             model.addAttribute("montoAmortizado", "$" + (cuentaPrestamo.getMontoSolicitado().subtract(cuentaPrestamo.getSaldoRestante())) + " MXN");
         }
         return URI_BASE + "banca-cuentas";
+    }
 
+    @GetMapping("/movimientos-debito")
+    public String movimientosDebito(Model model, HttpSession session){
+        Integer noCliente = (Integer) session.getAttribute("noCliente");
+        log.info("########## JEEM: El número de cliente es {}", noCliente);
+
+        Integer noCuenta = cuentaDebitoService.buscarCuentaDebitoPorNoCliente(noCliente).getNoCuenta();
+        log.info("########## JEEM: La cuenta es {}", noCuenta);
+        List<MovimientoDebito> listaMovimientos = cuentaDebitoService.buscarMovimientosPorNoCuenta(noCuenta);
+        log.info("########## JEEM: La lista tiene {} movimientos.", listaMovimientos.size());
+        model.addAttribute("listaMovimientos", listaMovimientos);
+        return URI_BASE + "banca-movimientos-debito";
+    }
+
+    @GetMapping("/movimientos-credito")
+    public String movimientosCredito(Model model, HttpSession session){
+        Integer noCliente = (Integer) session.getAttribute("noCliente");
+        log.info("########## JEEM: El número de cliente es {}", noCliente);
+
+        Integer noCuenta = cuentaCreditoService.buscarCuentaCreditoPorNoCliente(noCliente).getNoCuenta();
+        log.info("########## JEEM: La cuenta es {}", noCuenta);
+        List<MovimientoCredito> listaMovimientos = cuentaCreditoService.buscarMovimientosPorNoCuenta(noCuenta);
+        log.info("########## JEEM: La lista tiene {} movimientos.", listaMovimientos.size());
+        model.addAttribute("listaMovimientos", listaMovimientos);
+        return URI_BASE + "banca-movimientos-credito";
+    }
+
+    @GetMapping("/movimientos-prestamo")
+    public String movimientosPrestamo(Model model, HttpSession session){
+        Integer noCliente = (Integer) session.getAttribute("noCliente");
+        log.info("########## JEEM: El número de cliente es {}", noCliente);
+
+        Integer noCuenta = cuentaPrestamoService.buscarCuentaPrestamoPorNoCliente(noCliente).getNoCuenta();
+        log.info("########## JEEM: La cuenta es {}", noCuenta);
+        List<MovimientoPrestamo> listaMovimientos = cuentaPrestamoService.buscarMovimientosPorNoCuenta(noCuenta);
+        log.info("########## JEEM: La lista tiene {} movimientos.", listaMovimientos.size());
+        model.addAttribute("listaMovimientos", listaMovimientos);
+        return URI_BASE + "banca-movimientos-prestamo";
     }
 }

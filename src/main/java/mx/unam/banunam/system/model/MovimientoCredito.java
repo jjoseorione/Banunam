@@ -31,8 +31,15 @@ public class MovimientoCredito {
     private String origenDestino;
     @ManyToOne(targetEntity = OrigenDestinoMovimiento.class)
     @JoinColumn(name = "tipo_origen_destino")
-    private OrigenDestinoMovimiento tipo_origen_destino;
+    private OrigenDestinoMovimiento tipoOrigenDestino;
     private String concepto;
+
+    @PrePersist
+    @PreUpdate
+    public void prePersist(){
+        if (timestampMov == null)
+            timestampMov = LocalDateTime.now();
+    }
 
     @Override
     public boolean equals(Object o) {

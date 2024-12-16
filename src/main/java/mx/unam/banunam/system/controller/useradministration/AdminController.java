@@ -79,11 +79,12 @@ public class AdminController {
     }
 
     @GetMapping("/usuarios/agregar")
-    public String agregarUsuario(Model model){
+    public String agregarUsuario(Model model,  @ModelAttribute("usuario") UsuarioDTO usuarioRecibido){
+        log.info("{}", usuarioRecibido);
         List<TipoUsuarioDTO> listaTipos = tipoUsuarioService.listarTiposUsuario();
         String contrasenaRep = "";
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        model.addAttribute("usuario", usuarioDTO);
+        usuarioRecibido = usuarioRecibido == null ? new UsuarioDTO() : usuarioRecibido;
+        model.addAttribute("usuario", usuarioRecibido);
         model.addAttribute("listaTipos", listaTipos);
         model.addAttribute("contrasenaRep", contrasenaRep);
         model.addAttribute("tituloCard", "Agregar usuario");

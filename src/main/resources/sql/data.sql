@@ -169,10 +169,10 @@ INSERT INTO movimientos_debito VALUES( NULL, NOW(), 3000.0, 6, 10000007, '450398
 
 -----------------Inserción de CUENTAS_CREDITO (clientes 2,3,6,7)
 ---------------------------------noCuenta, limCredito, noCliente, saldoUtilizado, tasaInteresAnual
-INSERT INTO cuentas_credito VALUES(NULL, 15000.0, 2, 1563.02, 12.5);
-INSERT INTO cuentas_credito VALUES(NULL, 18000.0, 3, 8604.36, 9.5);
-INSERT INTO cuentas_credito VALUES(NULL, 15000.0, 6, 1496.25, 9.5);
-INSERT INTO cuentas_credito VALUES(NULL, 18000.0, 7, 7569.36, 9.5);
+INSERT INTO cuentas_credito VALUES(NULL, 15000.0, 2, 1563.02, 35);
+INSERT INTO cuentas_credito VALUES(NULL, 18000.0, 3, 8604.36, 28);
+INSERT INTO cuentas_credito VALUES(NULL, 15000.0, 6, 1496.25, 30);
+INSERT INTO cuentas_credito VALUES(NULL, 18000.0, 7, 7569.36, 25);
 
 -----------------Inserción de TARJETAS_CREDITO (clientes 3,6,7)
 ---------------------------------noTarjeta, fisicaElectronica, adicional, noCuenta, fechaExp, cvv, estatus

@@ -14,7 +14,8 @@ import java.util.List;
 public class CuentaCreditoServiceImpl implements CuentaCreditoService {
     @Autowired
     CuentaCreditoRepository cuentaCreditoRepository;
-//    MovimientoCreditoRepository movimientoCreditoRepository;
+    @Autowired
+    MovimientoCreditoRepository movimientoCreditoRepository;
 
     @Override
     public CuentaCredito buscarCuentaCreditoPorNoCuenta(Integer noCuenta) {
@@ -26,7 +27,17 @@ public class CuentaCreditoServiceImpl implements CuentaCreditoService {
         return cuentaCreditoRepository.findByClienteNoCliente(noCliente).orElse(null);
     }
 
-//    @Override
+    @Override
+    public CuentaCredito crearCuentaCredito(CuentaCredito cuentaCredito) {
+        return cuentaCreditoRepository.save(cuentaCredito);
+    }
+
+    @Override
+    public List<MovimientoCredito> buscarMovimientosPorNoCuenta(Integer noCuenta) {
+        return movimientoCreditoRepository.findByCuentaCreditoNoCuenta(noCuenta);
+    }
+
+    //    @Override
 //    public List<MovimientoCredito> buscarMovimientosPorNoCuenta(Integer id) {
 //        return movimientoCreditoRepository.findByCuentaCreditoNoCuenta(id);
 //    }

@@ -90,4 +90,9 @@ public class ClienteServiceImpl implements ClienteService {
     public List<ClienteDTO> listarClientesSinCuentaDebito() {
         return clienteRepository.findWhereCuentaDebitoIsNull().stream().map(this::convertirEnDTO).collect(Collectors.toList());
     }
+
+    @Override
+    public List<ClienteDTO> listarClientesSinCuentaCredito() {
+        return clienteRepository.findWhereCuentaCreditoIsNull().stream().map(this::convertirEnDTO).collect(Collectors.toList());
+    }
 }
